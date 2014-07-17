@@ -1,6 +1,7 @@
 package com.maxime.leondebruxelles.fragments;
 
 import com.maxime.leondebruxelles.R;
+import com.maxime.leondebruxelles.asynctask.HttpListLeonTask;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class DetailFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
         }
+        
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.detail_view, container, false);
@@ -49,7 +51,11 @@ public class DetailFragment extends Fragment {
 
     public void updateDetailView(int position) {
         TextView article = (TextView) getActivity().findViewById(R.id.article);
-        article.setText(Ipsum.Articles[position]);
+        //article.setText(Ipsum.Articles[position]);
+        
+        HttpListLeonTask listLeon = new HttpListLeonTask(this.getActivity(),article);
+        listLeon.execute();
+        
         mCurrentPosition = position;
     }
 
