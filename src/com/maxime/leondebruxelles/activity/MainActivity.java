@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.maxime.leondebruxelles.activity;
 
 import com.maxime.leondebruxelles.R;
@@ -22,9 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
+/**
+ * MainActivity.
+ * @author Maxime Gens
+ *
+ */
 public class MainActivity extends FragmentActivity implements ListLeonBruxellesFragment.OnLeonSelectedListener {
 
-    /** Called when the activity is first created. */
+    /** 
+     * Called when the activity is first created. 
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,21 +33,17 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
                 return;
             }
 
-            // Create an instance of ExampleFragment
-            ListLeonBruxellesFragment firstFragment = new ListLeonBruxellesFragment();
-
-            // In case this activity was started with special instructions from an Intent,
-            // pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+            // Create an instance and Add the fragment to the 'fragment_container' FrameLayout
+            ListLeonBruxellesFragment listLeonFragment = new ListLeonBruxellesFragment();
+            listLeonFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, listLeonFragment).commit();
         }
     }
 
+    /**
+     * Display or update a selected Leon information
+     */
     public void onLeonSelected(int position) {
-        // The user selected the headline of an article from the HeadlinesFragment
 
         // Capture the detail fragment from the activity layout
         DetailFragment detailFrag = (DetailFragment)
@@ -63,13 +51,12 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
 
         if (detailFrag != null) {
             // If article frag is available, we're in two-pane layout...
-
-            // Call a method in the ArticleFragment to update its content
+            // Call a method in the DetailFragment to update its content
         	detailFrag.updateDetailView(position);
 
         } else {
+        	
             // If the frag is not available, we're in the one-pane layout and must swap frags...
-
             // Create fragment and give it an argument for the selected leon
             DetailFragment newFragment = new DetailFragment();
             Bundle args = new Bundle();
@@ -81,10 +68,7 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
             // and add the transaction to the back stack so the user can navigate back
             transaction.replace(R.id.fragment_container, newFragment);
             transaction.addToBackStack(null);
-
-            // Commit the transaction
             transaction.commit();
         }
     }
-
 }

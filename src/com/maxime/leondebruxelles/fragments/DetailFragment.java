@@ -26,7 +26,6 @@ public class DetailFragment extends Fragment {
             mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
         }
         
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.detail_view, container, false);
     }
@@ -51,10 +50,7 @@ public class DetailFragment extends Fragment {
 
     public void updateDetailView(int position) {
         TextView article = (TextView) getActivity().findViewById(R.id.article);
-        //article.setText(Ipsum.Articles[position]);
-        
-        HttpListLeonTask listLeon = new HttpListLeonTask(this.getActivity(),article);
-        listLeon.execute();
+        article.setText(Ipsum.Articles[position]);
         
         mCurrentPosition = position;
     }

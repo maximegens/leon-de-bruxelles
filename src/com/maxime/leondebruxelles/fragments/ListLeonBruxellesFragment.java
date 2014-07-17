@@ -1,5 +1,7 @@
 package com.maxime.leondebruxelles.fragments;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,8 @@ import android.widget.ListView;
 
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.asynctask.HttpListLeonTask;
+import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
+import com.maxime.leondebruxelles.beans.Restaurants;
 
 public class ListLeonBruxellesFragment extends ListFragment {
 	OnLeonSelectedListener mCallback;
@@ -28,6 +32,8 @@ public class ListLeonBruxellesFragment extends ListFragment {
         int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                 android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
         
+        HttpListLeonTask listLeon = new HttpListLeonTask(this.getActivity());
+        listLeon.execute();
 
         // Create an array adapter for the list view, using the Ipsum headlines array
         setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Ipsum.Headlines));

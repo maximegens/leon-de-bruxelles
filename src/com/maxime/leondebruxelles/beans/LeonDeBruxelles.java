@@ -17,28 +17,6 @@ public class LeonDeBruxelles {
 	private String infosSUpplementaires;
 	private String telephone;
 	
-	public LeonDeBruxelles(int id, String nom, String adresse,
-			String complementAdresse, String codePostal, String ville,
-			String latitude, String longitude, String terasse, String parking,
-			String espaceEnfant, String urlPhoto, String infosSUpplementaires,
-			String telephone) {
-		super();
-		this.id = id;
-		this.nom = nom;
-		this.adresse = adresse;
-		this.complementAdresse = complementAdresse;
-		this.codePostal = codePostal;
-		this.ville = ville;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.terasse = terasse;
-		this.parking = parking;
-		this.espaceEnfant = espaceEnfant;
-		this.urlPhoto = urlPhoto;
-		this.infosSUpplementaires = infosSUpplementaires;
-		this.telephone = telephone;
-	}
-
 	public int getId() {
 		return id;
 	}
