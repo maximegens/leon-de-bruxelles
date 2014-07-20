@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -19,17 +20,21 @@ import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.adapter.ListLeonAdapter;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.beans.Restaurants;
+import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
-import com.maxime.leondebruxelles.utils.DownloadJson;
+import com.maxime.leondebruxelles.utils.Json;
 
 public class ListLeonBruxellesFragment extends Fragment{
 	OnLeonSelectedListener mCallback;
 	
     ArrayList<LeonDeBruxelles> lesLeons;  
 	Restaurants restaurants;
-    HttpListLeonTask listLeon;
+	RetreiveListLeonTask listLeon;
     ListLeonAdapter adapterListLeon;
     ListView listViewLeon;
+    TextView loaderText;
+    ProgressBar loader;
+    boolean isConnected;
 
     public interface OnLeonSelectedListener {
         public void onLeonSelected(int position);
@@ -47,19 +52,24 @@ public class ListLeonBruxellesFragment extends Fragment{
         Bundle savedInstanceState) {
     	
     	View myInflatedView = inflater.inflate(R.layout.list_leon_view, container,false);
-
     	listViewLeon = (ListView)myInflatedView.findViewById(R.id.list_view_leon);
-        listLeon = new HttpListLeonTask();    
-        listLeon.execute();
-        
+    	loader = (ProgressBar)myInflatedView.findViewById(R.id.progress_bar_list_leon);
+    	loaderText = (TextView)myInflatedView.findViewById(R.id.text_progress_bar_list_leon);
+    	
+    	// recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre un boolean indiquant si le device est online ou non
+    	isConnected = Connection.isConnectedInternet(getActivity());
+	    listLeon = new RetreiveListLeonTask();    
+	    listLeon.execute(isConnected);
+
         listViewLeon.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				TextView id_text = (TextView)view.findViewById(R.id.adapter_leon_id);
-				String id_string = id_text.getText().toString();
+					TextView id_text = (TextView)view.findViewById(R.id.adapter_leon_id);
+					String id_string = id_text.getText().toString();
 					mCallback.onLeonSelected(Integer.parseInt(id_string));
+					listViewLeon.setItemChecked(position, true);
 			}
 		});
         
@@ -87,27 +97,33 @@ public class ListLeonBruxellesFragment extends Fragment{
         }
     }
 
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        mCallback.onLeonSelected(position);
-//        getListView().setItemChecked(position, true);
-//    } 
-    
-    private class HttpListLeonTask extends AsyncTask<String, String, Restaurants> {
-	
-    	
+    /**
+     * Récupére la liste des Leons de Bruxelles pour les afficher à l'utilisateur.
+     * 
+     */
+    private class RetreiveListLeonTask extends AsyncTask<Boolean, String, Restaurants> {
     	@Override
     	protected void onPreExecute() {
     		super.onPreExecute();
+    		loader.setVisibility(View.VISIBLE);
+    		loaderText.setVisibility(View.VISIBLE);
     	}
-    	
+
     	@Override
-    	protected Restaurants doInBackground(String... params) {
-    		String json = DownloadJson.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
+    	protected Restaurants doInBackground(Boolean... params) {
+    		
+    		boolean isConnected = params[0];
+    		String json;
+    		
+    		/* Si l'appareil est online on récupere la liste via le webservice sinon on charge le json local des Leons de Bruxelles*/
+    		if(isConnected)
+    			json = Json.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
+    		else
+    			json = Json.getJsonFromAssets(getActivity().getAssets(),Constantes.LOCAL_LEON_DE_BRUXELLES); 
+    		
     		Restaurants restaurants = new Gson().fromJson(json, Restaurants.class);
     		return restaurants;
     	}
-    	
     	@Override
     	protected void onPostExecute(Restaurants restaurants) {
     		for (LeonDeBruxelles leon : restaurants.restaurants) {
@@ -115,7 +131,8 @@ public class ListLeonBruxellesFragment extends Fragment{
     		}
     		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
     		listViewLeon.setAdapter(adapterListLeon);
-    		
+    		loader.setVisibility(View.INVISIBLE);
+    		loaderText.setVisibility(View.INVISIBLE);
     	}
     }
 }

@@ -10,6 +10,7 @@ import com.maxime.leondebruxelles.beans.Restaurants;
 public class Constantes {
 	
 	public static final String URL_LEON_DE_BRUXELLES = "http://www.leon-de-bruxelles.fr/webservice/restaurant-service.php";
+	public static final String LOCAL_LEON_DE_BRUXELLES = "leonDeBruxelles.json";
 	public static Restaurants lesRestaurants = new Restaurants();
 
 }

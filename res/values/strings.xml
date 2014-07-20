@@ -2,4 +2,5 @@
 
 <resources>
     <string name="app_name">Léon de Bruxelles</string>
+    <string name="waiting_for_download_list_leon">Chargement de la liste des restaurants en cours</string>
 </resources>
