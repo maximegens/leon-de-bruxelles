@@ -1,11 +1,8 @@
 package com.maxime.leondebruxelles.asynctask;
 
-import java.util.ArrayList;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -14,10 +11,9 @@ import com.maxime.leondebruxelles.beans.Restaurants;
 import com.maxime.leondebruxelles.utils.Constantes;
 import com.maxime.leondebruxelles.utils.DownloadJson;
  
-public class HttpListLeonTask extends AsyncTask<String, String, String> {
+public class HttpListLeonTask extends AsyncTask<String, String, Restaurants> {
 
 	private Context context;
-	private TextView t;
 	
 	public HttpListLeonTask(Context c){
 		this.context = c;
@@ -28,23 +24,16 @@ public class HttpListLeonTask extends AsyncTask<String, String, String> {
 		super.onPreExecute();
 	}
 	
-	
 	@Override
-	protected String doInBackground(String... params) {
-		return DownloadJson.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
+	protected Restaurants doInBackground(String... params) {
+		String json = DownloadJson.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
+		Restaurants restaurants = new Gson().fromJson(json, Restaurants.class);
+		return restaurants;
 	}
 	
 	@Override
-	protected void onPostExecute(String result) {
-		StringBuilder str = new StringBuilder();
+	protected void onPostExecute(Restaurants restaurants) {
+
 		
-		Restaurants restaurants = new Gson().fromJson(result, Restaurants.class);
-		
-		System.out.println("---------------------- Les Restaurants ------------------ ");
-		for (LeonDeBruxelles leon : restaurants.restaurants) {
-			str.append(leon.getId()+" - "+leon.getNom()+"\n");
-			System.out.println(leon.getId()+" - "+leon.getNom());
-		}
-		System.out.println("---------------------------------------- ");
 	}
 }

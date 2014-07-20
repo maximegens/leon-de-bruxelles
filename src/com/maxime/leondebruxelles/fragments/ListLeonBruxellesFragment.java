@@ -3,50 +3,75 @@ package com.maxime.leondebruxelles.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.maxime.leondebruxelles.R;
-import com.maxime.leondebruxelles.asynctask.HttpListLeonTask;
+import com.maxime.leondebruxelles.adapter.ListLeonAdapter;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.beans.Restaurants;
+import com.maxime.leondebruxelles.utils.Constantes;
+import com.maxime.leondebruxelles.utils.DownloadJson;
 
-public class ListLeonBruxellesFragment extends ListFragment {
+public class ListLeonBruxellesFragment extends Fragment{
 	OnLeonSelectedListener mCallback;
+	
+    ArrayList<LeonDeBruxelles> lesLeons;  
+	Restaurants restaurants;
+    HttpListLeonTask listLeon;
+    ListLeonAdapter adapterListLeon;
+    ListView listViewLeon;
 
-    // The container Activity must implement this interface so the frag can deliver messages
     public interface OnLeonSelectedListener {
-        /** Called by HeadlinesFragment when a list item is selected */
         public void onLeonSelected(int position);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lesLeons = new ArrayList<LeonDeBruxelles>();  
+    	restaurants = null;
+    }
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, 
+        Bundle savedInstanceState) {
+    	
+    	View myInflatedView = inflater.inflate(R.layout.list_leon_view, container,false);
 
-        // We need to use a different list item layout for devices older than Honeycomb
-        int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                android.R.layout.simple_list_item_activated_1 : android.R.layout.simple_list_item_1;
-        
-        HttpListLeonTask listLeon = new HttpListLeonTask(this.getActivity());
+    	listViewLeon = (ListView)myInflatedView.findViewById(R.id.list_view_leon);
+        listLeon = new HttpListLeonTask();    
         listLeon.execute();
+        
+        listViewLeon.setOnItemClickListener(new OnItemClickListener() {
 
-        // Create an array adapter for the list view, using the Ipsum headlines array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), layout, Ipsum.Headlines));
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView id_text = (TextView)view.findViewById(R.id.adapter_leon_id);
+				String id_string = id_text.getText().toString();
+					mCallback.onLeonSelected(Integer.parseInt(id_string));
+			}
+		});
+        
+        return myInflatedView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        // When in two-pane layout, set the listview to highlight the selected list item
-        // (We do this during onStart because at the point the listview is available.)
         if (getFragmentManager().findFragmentById(R.id.detail_fragment) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            listViewLeon.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 
@@ -54,8 +79,6 @@ public class ListLeonBruxellesFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception.
         try {
             mCallback = (OnLeonSelectedListener) activity;
         } catch (ClassCastException e) {
@@ -64,14 +87,35 @@ public class ListLeonBruxellesFragment extends ListFragment {
         }
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // Notify the parent activity of selected item
-        mCallback.onLeonSelected(position);
-        
-        // Set the item as checked to be highlighted when in two-pane layout
-        getListView().setItemChecked(position, true);
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        mCallback.onLeonSelected(position);
+//        getListView().setItemChecked(position, true);
+//    } 
+    
+    private class HttpListLeonTask extends AsyncTask<String, String, Restaurants> {
+	
+    	
+    	@Override
+    	protected void onPreExecute() {
+    		super.onPreExecute();
+    	}
+    	
+    	@Override
+    	protected Restaurants doInBackground(String... params) {
+    		String json = DownloadJson.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
+    		Restaurants restaurants = new Gson().fromJson(json, Restaurants.class);
+    		return restaurants;
+    	}
+    	
+    	@Override
+    	protected void onPostExecute(Restaurants restaurants) {
+    		for (LeonDeBruxelles leon : restaurants.restaurants) {
+    			lesLeons.add(leon);
+    		}
+    		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
+    		listViewLeon.setAdapter(adapterListLeon);
+    		
+    	}
     }
-    
-    
 }

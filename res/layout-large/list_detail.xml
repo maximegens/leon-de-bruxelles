@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:layout_height="match_parent">
 
-    <fragment android:name="com.maxime.leondebruxelles.fragments.ListLeonFragment"
+    <fragment android:name="com.maxime.leondebruxelles.fragments.ListLeonBruxellesFragment"
               android:id="@+id/list_leon_fragment"
               android:layout_weight="1"
               android:layout_width="0dp"
