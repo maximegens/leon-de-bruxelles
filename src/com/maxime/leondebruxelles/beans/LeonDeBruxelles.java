@@ -1,6 +1,11 @@
 package com.maxime.leondebruxelles.beans;
 
-public class LeonDeBruxelles {
+import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+@SuppressLint("ParcelCreator")
+public class LeonDeBruxelles implements Parcelable{
 
 	private int id;
 	private String nom;
@@ -12,10 +17,12 @@ public class LeonDeBruxelles {
 	private String longitude;
 	private String terasse;
 	private String parking;
+	private String accesHandicape;
 	private String espaceEnfant;
-	private String urlPhoto;
-	private String infosSUpplementaires;
-	private String telephone;
+	private String photo;
+	private String infosSupplementaires;
+	private String Telephone;
+	private float distanceMeterFromUser;
 	
 	public int getId() {
 		return id;
@@ -97,6 +104,14 @@ public class LeonDeBruxelles {
 		this.parking = parking;
 	}
 
+	public String getAccesHandicape() {
+		return accesHandicape;
+	}
+
+	public void setAccesHandicape(String accesHandicape) {
+		this.accesHandicape = accesHandicape;
+	}
+
 	public String getEspaceEnfant() {
 		return espaceEnfant;
 	}
@@ -105,28 +120,64 @@ public class LeonDeBruxelles {
 		this.espaceEnfant = espaceEnfant;
 	}
 
-	public String getUrlPhoto() {
-		return urlPhoto;
+	public String getPhoto() {
+		return photo;
 	}
 
-	public void setUrlPhoto(String urlPhoto) {
-		this.urlPhoto = urlPhoto;
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
-	public String getInfosSUpplementaires() {
-		return infosSUpplementaires;
+	public String getInfosSupplementaires() {
+		return infosSupplementaires;
 	}
 
-	public void setInfosSUpplementaires(String infosSUpplementaires) {
-		this.infosSUpplementaires = infosSUpplementaires;
+	public void setInfosSupplementaires(String infosSupplementaires) {
+		this.infosSupplementaires = infosSupplementaires;
 	}
 
 	public String getTelephone() {
-		return telephone;
+		return Telephone;
 	}
 
 	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+		Telephone = telephone;
 	}
+
+
+
+	public float getDistanceMeterFromUser() {
+		return distanceMeterFromUser;
+	}
+
+	public void setDistanceMeterFromUser(float distanceMeterFromUser) {
+		this.distanceMeterFromUser = distanceMeterFromUser;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toString() {
+		return "LeonDeBruxelles [id=" + id + ", nom=" + nom + ", adresse="
+				+ adresse + ", complementAdresse=" + complementAdresse
+				+ ", codePostal=" + codePostal + ", ville=" + ville
+				+ ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", terasse=" + terasse + ", parking=" + parking
+				+ ", accesHandicape=" + accesHandicape + ", espaceEnfant="
+				+ espaceEnfant + ", photo=" + photo + ", infosSupplementaires="
+				+ infosSupplementaires + ", Telephone=" + Telephone
+				+ ", distanceMeterFromUser=" + distanceMeterFromUser + "]";
+	}
+	
 	
 }

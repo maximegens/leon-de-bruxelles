@@ -1,6 +1,7 @@
 package com.maxime.leondebruxelles.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
-
+import com.maxime.leondebruxelles.sort.SortByDistance;
+import com.maxime.leondebruxelles.utils.Constantes;
+import com.maxime.leondebruxelles.utils.Conversion;
 
 /**
  * Adaptateur permettant de mettre en forme et d'afficher chaque item, dans un style personnalisÃ©, de la listeView pour la page d'accueil.
@@ -26,9 +29,9 @@ public class ListLeonAdapter extends BaseAdapter {
 
 	public ListLeonAdapter(Context context,List<LeonDeBruxelles> lesleons) {
 		inflater = LayoutInflater.from(context);
+		Collections.sort(lesleons, new SortByDistance());
 		this.lesleons = lesleons;
 		ctx = context;
-		
 	}
 	@Override
 	public int getCount() {
@@ -37,7 +40,6 @@ public class ListLeonAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-	
 		return lesleons.get(position);
 	}
 
@@ -50,27 +52,28 @@ public class ListLeonAdapter extends BaseAdapter {
 		TextView LeonId;
 		TextView LeonNom;
 		TextView Distance;
-
 	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if(convertView == null) {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.leon_item, null);
-
 			holder.LeonId = (TextView)convertView.findViewById(R.id.adapter_leon_id);
 			holder.LeonNom = (TextView)convertView.findViewById(R.id.adapter_leon_nom);
 			holder.Distance = (TextView)convertView.findViewById(R.id.adapter_leon_distance);
-
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
+					
+		if(lesleons.get(position).getDistanceMeterFromUser() > Constantes.ONE_KILOMETER)
+			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Km");
+		else
+			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Métres");
 		holder.LeonId.setText(String.valueOf(lesleons.get(position).getId()));
 		holder.LeonNom.setText(lesleons.get(position).getNom());
-		holder.Distance.setText("Calcul en cours");
 		return convertView;
 	}
 }

@@ -3,6 +3,11 @@ package com.maxime.leondebruxelles.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.maxime.leondebruxelles.R;
@@ -24,9 +30,9 @@ import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
 import com.maxime.leondebruxelles.utils.Json;
 
-public class ListLeonBruxellesFragment extends Fragment{
-	OnLeonSelectedListener mCallback;
+public class ListLeonBruxellesFragment extends Fragment implements LocationListener{
 	
+	OnLeonSelectedListener mCallback;
     ArrayList<LeonDeBruxelles> lesLeons;  
 	Restaurants restaurants;
 	RetreiveListLeonTask listLeon;
@@ -35,6 +41,8 @@ public class ListLeonBruxellesFragment extends Fragment{
     TextView loaderText;
     ProgressBar loader;
     boolean isConnected;
+    LocationManager locationManager;
+    
 
     public interface OnLeonSelectedListener {
         public void onLeonSelected(int position);
@@ -56,13 +64,20 @@ public class ListLeonBruxellesFragment extends Fragment{
     	loader = (ProgressBar)myInflatedView.findViewById(R.id.progress_bar_list_leon);
     	loaderText = (TextView)myInflatedView.findViewById(R.id.text_progress_bar_list_leon);
     	
-    	// recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre un boolean indiquant si le device est online ou non
-    	isConnected = Connection.isConnectedInternet(getActivity());
-	    listLeon = new RetreiveListLeonTask();    
-	    listLeon.execute(isConnected);
-
+    	// Recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre un boolean indiquant si le device est online ou non
+    	// Si la liste n'a pas déjà été récupéré on la télécharge
+    	
+    	if(savedInstanceState == null){
+	    	isConnected = Connection.isConnectedInternet(getActivity());
+		    listLeon = new RetreiveListLeonTask();    
+		    listLeon.execute(isConnected);
+    	}else{
+    		lesLeons = savedInstanceState.getParcelableArrayList("listLeonParcelable");
+    		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
+    		listViewLeon.setAdapter(adapterListLeon);
+    	}
+    	
         listViewLeon.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -72,28 +87,46 @@ public class ListLeonBruxellesFragment extends Fragment{
 					listViewLeon.setItemChecked(position, true);
 			}
 		});
-        
         return myInflatedView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         if (getFragmentManager().findFragmentById(R.id.detail_fragment) != null) {
             listViewLeon.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
+    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity();
+		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,this);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0,this);
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(this);
+	}
+	
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+       super.onSaveInstanceState(outState);
+       outState.putParcelableArrayList("listLeonParcelable", lesLeons);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         try {
             mCallback = (OnLeonSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString()+ " must implement OnHeadlineSelectedListener");
         }
     }
 
@@ -102,6 +135,8 @@ public class ListLeonBruxellesFragment extends Fragment{
      * 
      */
     private class RetreiveListLeonTask extends AsyncTask<Boolean, String, Restaurants> {
+    	float[] distance = new float[3];
+    	
     	@Override
     	protected void onPreExecute() {
     		super.onPreExecute();
@@ -111,28 +146,58 @@ public class ListLeonBruxellesFragment extends Fragment{
 
     	@Override
     	protected Restaurants doInBackground(Boolean... params) {
-    		
     		boolean isConnected = params[0];
     		String json;
-    		
     		/* Si l'appareil est online on récupere la liste via le webservice sinon on charge le json local des Leons de Bruxelles*/
     		if(isConnected)
     			json = Json.getJsonFromURL(Constantes.URL_LEON_DE_BRUXELLES);
     		else
     			json = Json.getJsonFromAssets(getActivity().getAssets(),Constantes.LOCAL_LEON_DE_BRUXELLES); 
-    		
     		Restaurants restaurants = new Gson().fromJson(json, Restaurants.class);
+    		
     		return restaurants;
     	}
+    	
     	@Override
     	protected void onPostExecute(Restaurants restaurants) {
+    		
+    		//Calcul de la distance vers le Leon et ajout de la liste a l'adapter
+    		lesLeons.clear();
     		for (LeonDeBruxelles leon : restaurants.restaurants) {
+    			Location.distanceBetween(Constantes.locationUser.getLatitude(),Constantes.locationUser.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
+    			leon.setDistanceMeterFromUser(distance[0]);
     			lesLeons.add(leon);
     		}
     		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
     		listViewLeon.setAdapter(adapterListLeon);
     		loader.setVisibility(View.INVISIBLE);
     		loaderText.setVisibility(View.INVISIBLE);
+    		Constantes.lesRestaurants = restaurants;
     	}
     }
+
+    /** 
+     * Implementation de LocationListener
+     * Permet de récupérer la position GPS de l'utilisateur
+     */
+	@Override
+	public void onLocationChanged(Location location) {
+		Constantes.locationUser = location;
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		if(status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+			Toast.makeText(getActivity(), "Le service de géolocalisation est temporairement indisponible", Toast.LENGTH_SHORT).show();
+		if(status == LocationProvider.OUT_OF_SERVICE)
+			Toast.makeText(getActivity(), "Le service de géolocalisation est indisponible", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+	}
 }
