@@ -48,6 +48,12 @@ public class ListLeonAdapter extends BaseAdapter {
 		return position;
 	}
 
+	 public void updateLeonList(List<LeonDeBruxelles> newlist) {
+		 	lesleons = newlist;
+		 	Collections.sort(lesleons, new SortByDistance());
+		 	this.notifyDataSetChanged();
+	    }
+	
 	private class ViewHolder {
 		TextView LeonId;
 		TextView LeonNom;
@@ -67,11 +73,16 @@ public class ListLeonAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-					
-		if(lesleons.get(position).getDistanceMeterFromUser() > Constantes.ONE_KILOMETER)
+		
+		if(lesleons.get(position).getDistanceMeterFromUser() == 0)
+			holder.Distance.setText("");
+		else if(lesleons.get(position).getDistanceMeterFromUser() > Constantes.ONE_KILOMETER)
 			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Km");
-		else
+		else if(lesleons.get(position).getDistanceMeterFromUser() < Constantes.ONE_KILOMETER)
 			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Métres");
+		else
+			holder.Distance.setText("Impossible de calculer la distance");
+		
 		holder.LeonId.setText(String.valueOf(lesleons.get(position).getId()));
 		holder.LeonNom.setText(lesleons.get(position).getNom());
 		return convertView;

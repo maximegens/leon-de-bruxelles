@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.maxime.leondebruxelles.R;
+import com.maxime.leondebruxelles.activity.PermissionGPSActivity;
 import com.maxime.leondebruxelles.adapter.ListLeonAdapter;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.beans.Restaurants;
@@ -97,13 +99,21 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
             listViewLeon.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
+    
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity();
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+		
+		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && Constantes.CHOICE_TO_ACTIVATE_GPS){
+			  Intent localIntent = new Intent(getActivity(), PermissionGPSActivity.class);
+			  localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			  startActivity(localIntent);
+		}
+			
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0,this);
+		
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0,this);
 		
 	}
@@ -113,6 +123,8 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 		super.onPause();
 		locationManager.removeUpdates(this);
 	}
+	
+	
 	
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -164,8 +176,10 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		//Calcul de la distance vers le Leon et ajout de la liste a l'adapter
     		lesLeons.clear();
     		for (LeonDeBruxelles leon : restaurants.restaurants) {
-    			Location.distanceBetween(Constantes.locationUser.getLatitude(),Constantes.locationUser.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
-    			leon.setDistanceMeterFromUser(distance[0]);
+    			if(Constantes.locationUser != null){
+    				Location.distanceBetween(Constantes.locationUser.getLatitude(),Constantes.locationUser.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
+    				leon.setDistanceMeterFromUser(distance[0]);
+    			}
     			lesLeons.add(leon);
     		}
     		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
@@ -175,6 +189,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		Constantes.lesRestaurants = restaurants;
     	}
     }
+    
 
     /** 
      * Implementation de LocationListener
@@ -182,7 +197,17 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
      */
 	@Override
 	public void onLocationChanged(Location location) {
+		float[] distance = new float[3];
 		Constantes.locationUser = location;
+		
+		if(Constantes.lesRestaurants != null){
+			for (LeonDeBruxelles leon : Constantes.lesRestaurants.restaurants ) {
+				Location.distanceBetween(location.getLatitude(),location.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
+				leon.setDistanceMeterFromUser(distance[0]);
+				lesLeons.add(leon);
+			}
+			adapterListLeon.updateLeonList(lesLeons);
+		}
 	}
 
 	@Override

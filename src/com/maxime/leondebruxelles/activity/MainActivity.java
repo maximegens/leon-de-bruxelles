@@ -34,6 +34,12 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, listLeonFragment).commit();
         }
     }
+    
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+	}
 
     /**
      * Display or update a selected Leon information
@@ -57,4 +63,5 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
             transaction.commit();
         }
     }
+    
 }

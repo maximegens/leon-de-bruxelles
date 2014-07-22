@@ -3,11 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
+    android:paddingBottom="5dp"
     >
     <RelativeLayout 
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:layout_marginBottom="5dp">
+    	android:layout_marginBottom="5dp"
+    	android:paddingBottom="5dp">
     	
 	<TextView 
 			android:id="@+id/detail_nom_leon"
@@ -109,8 +111,6 @@
 	        android:src="@drawable/handicape" 
 	        android:visibility="visible"/>
 
-
-	    
 	</RelativeLayout>	
 		
 </ScrollView>		
