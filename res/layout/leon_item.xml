@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" 
-    android:paddingLeft="10dp">
+    android:paddingLeft="10dp"
+    android:background="@color/green_leon_de_bruxelles">
     
    <LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_gravity="center_vertical"
+	    android:padding="5dp"
     	>
-   		<TextView 
-   		    android:id="@+id/adapter_leon_id"
-	         android:layout_width="fill_parent"
-	         android:layout_height="fill_parent"
-			 android:visibility="invisible"
-        	 />
-    
-	    <TextView 
+    	
+ 	    <TextView 
+	 		android:id="@+id/adapter_leon_id"
+			android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:visibility="invisible"
+	     />
+ 	    
+	    <TextView
 	        android:id="@+id/adapter_leon_nom"
-	         android:layout_width="fill_parent"
-	         android:layout_height="fill_parent"
-	         android:textSize="16sp"
-	         android:textStyle="bold"
-	         android:text="Nom du leon"
-	         />
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Nom du leon"
+	        android:textColor="@color/white"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+
+	    <TextView
+	        android:id="@+id/adapter_leon_distance"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:textColor="@color/white"
+	        android:text="Distance du leon" />
+
 	 </LinearLayout>
- 
-	    <TextView android:id="@+id/adapter_leon_distance"
-	         android:layout_width="fill_parent"
-	         android:layout_height="fill_parent"
-	         android:text="Distance du leon"
-	         android:textColor="@color/white"
-	         />
+
+   	   	<TextView 
+	        android:id="@+id/adapter_leon_adresse"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="Adresse du leon"
+	        android:lines="2"
+	        android:padding="5dp"
+	    />
+
 </LinearLayout>

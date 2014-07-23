@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="@drawable/shape_details"
     android:paddingBottom="5dp"
     >
     <RelativeLayout 
@@ -17,37 +17,58 @@
 		    android:layout_height="wrap_content"
 		    android:paddingTop="15dp"
 		    android:paddingLeft="5dp"
-		    android:textSize="18sp" 
+		    android:textSize="22sp" 
+		    android:textStyle="bold"
+		    android:textColor="@color/white"
+		    android:gravity="center_horizontal"
+		    android:lines="2"
 		    android:text="Léon de Bruxelles - Nom du Leon"/>
 	
 		<TextView 
-			android:id="@+id/detail_code_postale_ville_leon"
+			android:id="@+id/detail_adrese_complete_leon"
 			android:layout_below="@+id/detail_nom_leon"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:paddingTop="5dp"
 		    android:paddingLeft="5dp"
-		    android:textSize="18sp" 
+		    android:textSize="18sp"
+		    android:lines="2"
+		    android:textColor="@color/white"
 		    android:text="59000 Lille"/>
 		
 	   <TextView 
 			android:id="@+id/detail_horaires_leon"
-			android:layout_below="@+id/detail_code_postale_ville_leon"
+			android:layout_below="@+id/detail_adrese_complete_leon"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:paddingTop="5dp"
 		    android:paddingLeft="5dp"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginTop="5dp"
+		    android:layout_marginBottom="5dp"
 		    android:textSize="14sp" 
+		    android:textColor="@color/black"
+		    android:background="@drawable/shape_details_horaires"
 		    android:text="Horaires d'ouverture"/>
+	   
+	   <ImageView
+	        android:id="@+id/detail_image_tel"
+	        android:contentDescription="@string/content_tel"
+	        android:layout_width="50dp"
+	        android:layout_height="50dp"
+	        android:layout_below="@+id/detail_horaires_leon"
+	        android:layout_centerHorizontal="true"
+	        android:src="@drawable/tel" />
 	   
 	    <TextView 
 			android:id="@+id/detail_tel_leon"
-			android:layout_below="@+id/detail_horaires_leon"
-		    android:layout_width="match_parent"
+			android:layout_below="@+id/detail_image_tel"
+		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:paddingTop="5dp"
-		    android:paddingLeft="5dp"
-		    android:textSize="18sp" 
+		    android:layout_centerHorizontal="true"
+		    android:textSize="18sp"
+		    android:textColor="@color/white"
 		    android:text="03 21 45 67 32"/>
 	   
 	   <RelativeLayout
@@ -87,6 +108,7 @@
 		    android:paddingTop="5dp"
 		    android:paddingLeft="5dp"
 		    android:textSize="18sp" 
+		    android:textColor="@color/white"
 		    android:text="@string/detail_information"/>
 	   
 	    <ImageView

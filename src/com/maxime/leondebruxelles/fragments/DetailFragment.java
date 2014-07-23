@@ -4,8 +4,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,13 +30,14 @@ public class DetailFragment extends Fragment {
     public final static String ARG_ID = "id";
     int mCurrentId = -1;
     TextView textViewNomLeon;
-    TextView textViewCodePostaleVilleLeon;
+    TextView textViewAdresseCompleteLeon;
     TextView textViewHoraires;
     TextView textViewTelLeon;
     ImageView imgViewPhoto;
     ImageView imgViewParking;
     ImageView imgViewAccesHandicape;
     ProgressBar loaderPhoto;
+    ImageView imageTel;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -46,13 +50,23 @@ public class DetailFragment extends Fragment {
         }
         
         textViewNomLeon = (TextView)myInflatedView.findViewById(R.id.detail_nom_leon);
-        textViewCodePostaleVilleLeon = (TextView)myInflatedView.findViewById(R.id.detail_code_postale_ville_leon);
+        textViewAdresseCompleteLeon = (TextView)myInflatedView.findViewById(R.id.detail_adrese_complete_leon);
         textViewHoraires = (TextView)myInflatedView.findViewById(R.id.detail_horaires_leon);
         textViewTelLeon = (TextView)myInflatedView.findViewById(R.id.detail_tel_leon);
         imgViewPhoto = (ImageView)myInflatedView.findViewById(R.id.detail_photo_leon);
         imgViewParking = (ImageView)myInflatedView.findViewById(R.id.detail_parking_leon);
         imgViewAccesHandicape = (ImageView)myInflatedView.findViewById(R.id.detail_handicape_leon);
         loaderPhoto = (ProgressBar)myInflatedView.findViewById(R.id.detail_progress_bar_photo_leon);
+    	imageTel = (ImageView)myInflatedView.findViewById(R.id.detail_image_tel);
+    	
+        imageTel.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				final Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + textViewTelLeon.getText().toString()));
+				startActivity(telIntent);
+			}
+		});
         
         return myInflatedView;
     }
@@ -72,12 +86,11 @@ public class DetailFragment extends Fragment {
     public void updateDetailView(int id) {
         
         LeonDeBruxelles leLeon = Constantes.lesRestaurants.getLeonById(id);
-        
         RetreivePhotoLeonTask retreivePhotoLeonTask = new RetreivePhotoLeonTask();
         retreivePhotoLeonTask.execute(leLeon.getPhoto());
         
-        textViewNomLeon.setText(Constantes.TITRE_LEON+" - "+leLeon.getNom());
-        textViewCodePostaleVilleLeon.setText(leLeon.getCodePostal()+ " " +leLeon.getVille());
+        textViewNomLeon.setText(Html.fromHtml(Constantes.TITRE_LEON+" <br/> "+leLeon.getNom()));
+        textViewAdresseCompleteLeon.setText(leLeon.getAdresse() +" - "+ leLeon.getCodePostal()+ " " +leLeon.getVille());
         textViewHoraires.setText(Html.fromHtml(leLeon.getInfosSupplementaires()));
         textViewTelLeon.setText(leLeon.getTelephone());
            
@@ -131,7 +144,6 @@ public class DetailFragment extends Fragment {
     			imgViewPhoto.setImageBitmap(bitmap);
     		}
     		loaderPhoto.setVisibility(View.INVISIBLE);
-
     	}
     }
 }

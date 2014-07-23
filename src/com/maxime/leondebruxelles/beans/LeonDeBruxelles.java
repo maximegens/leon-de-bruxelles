@@ -144,8 +144,6 @@ public class LeonDeBruxelles implements Parcelable{
 		Telephone = telephone;
 	}
 
-
-
 	public float getDistanceMeterFromUser() {
 		return distanceMeterFromUser;
 	}
@@ -178,6 +176,4 @@ public class LeonDeBruxelles implements Parcelable{
 				+ infosSupplementaires + ", Telephone=" + Telephone
 				+ ", distanceMeterFromUser=" + distanceMeterFromUser + "]";
 	}
-	
-	
 }

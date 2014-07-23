@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/green_leon_de_bruxelles"
     >
     
     <ProgressBar
@@ -25,7 +26,10 @@
    <ListView 
 	    android:id="@+id/list_view_leon"
     	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent">
+    	android:layout_height="fill_parent"
+        android:divider="@color/white"
+        android:dividerHeight="2dp"
+    	>
 	      
 	</ListView>
 </RelativeLayout>

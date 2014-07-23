@@ -24,18 +24,15 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
         setContentView(R.layout.list_detail);
 
         if (findViewById(R.id.fragment_container) != null) {
-
             if (savedInstanceState != null) {
                 return;
             }
-
            ListLeonBruxellesFragment listLeonFragment = new ListLeonBruxellesFragment();
            listLeonFragment.setArguments(getIntent().getExtras());
            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, listLeonFragment).commit();
         }
     }
     
-	
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -52,7 +49,6 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
         if (detailFrag != null) {
         	detailFrag.updateDetailView(id);
         } else {
-        
             DetailFragment newFragment = new DetailFragment();
             Bundle args = new Bundle();
             args.putInt(DetailFragment.ARG_ID, id);
@@ -63,5 +59,4 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
             transaction.commit();
         }
     }
-    
 }

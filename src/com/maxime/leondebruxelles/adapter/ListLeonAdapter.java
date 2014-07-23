@@ -49,15 +49,16 @@ public class ListLeonAdapter extends BaseAdapter {
 	}
 
 	 public void updateLeonList(List<LeonDeBruxelles> newlist) {
-		 	lesleons = newlist;
-		 	Collections.sort(lesleons, new SortByDistance());
-		 	this.notifyDataSetChanged();
-	    }
+	 	 lesleons = newlist;
+	 	 Collections.sort(lesleons, new SortByDistance());
+	 	 this.notifyDataSetChanged();
+	}
 	
 	private class ViewHolder {
 		TextView LeonId;
 		TextView LeonNom;
 		TextView Distance;
+		TextView Adresse;
 	}
 	
 	@Override
@@ -69,6 +70,7 @@ public class ListLeonAdapter extends BaseAdapter {
 			holder.LeonId = (TextView)convertView.findViewById(R.id.adapter_leon_id);
 			holder.LeonNom = (TextView)convertView.findViewById(R.id.adapter_leon_nom);
 			holder.Distance = (TextView)convertView.findViewById(R.id.adapter_leon_distance);
+			holder.Adresse = (TextView)convertView.findViewById(R.id.adapter_leon_adresse);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -85,6 +87,7 @@ public class ListLeonAdapter extends BaseAdapter {
 		
 		holder.LeonId.setText(String.valueOf(lesleons.get(position).getId()));
 		holder.LeonNom.setText(lesleons.get(position).getNom());
+		holder.Adresse.setText(lesleons.get(position).getAdresse());
 		return convertView;
 	}
 }

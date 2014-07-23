@@ -9,14 +9,17 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +48,6 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     boolean isConnected;
     LocationManager locationManager;
     
-
     public interface OnLeonSelectedListener {
         public void onLeonSelected(int position);
     }
@@ -89,6 +91,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 					listViewLeon.setItemChecked(position, true);
 			}
 		});
+        
         return myInflatedView;
     }
 
@@ -123,8 +126,6 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 		super.onPause();
 		locationManager.removeUpdates(this);
 	}
-	
-	
 	
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -190,7 +191,6 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     	}
     }
     
-
     /** 
      * Implementation de LocationListener
      * Permet de récupérer la position GPS de l'utilisateur
@@ -199,6 +199,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 	public void onLocationChanged(Location location) {
 		float[] distance = new float[3];
 		Constantes.locationUser = location;
+		lesLeons.clear();
 		
 		if(Constantes.lesRestaurants != null){
 			for (LeonDeBruxelles leon : Constantes.lesRestaurants.restaurants ) {
@@ -206,7 +207,8 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 				leon.setDistanceMeterFromUser(distance[0]);
 				lesLeons.add(leon);
 			}
-			adapterListLeon.updateLeonList(lesLeons);
+			if(adapterListLeon != null)
+				adapterListLeon.updateLeonList(lesLeons);
 		}
 	}
 

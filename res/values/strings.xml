@@ -7,5 +7,6 @@
     <string name="detail_information">Accès disponible</string>
     <string name="content_description_img_leon">Photographie du Leon</string>
     <string name="content_parking_img_leon">Pictogramme place de parking</string>
+    <string name="content_tel">Appelez le Léon</string>
     <string name="content_handicape_img_leon">Pictogramme acces handicape</string>
 </resources>

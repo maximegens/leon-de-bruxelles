@@ -13,8 +13,4 @@ public class Restaurants{
 		}
 		return null;
 	}
-	
-	
-	
-
 }
