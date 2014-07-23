@@ -1,8 +1,12 @@
 package com.maxime.leondebruxelles.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.fragments.DetailFragment;
@@ -13,8 +17,9 @@ import com.maxime.leondebruxelles.fragments.ListLeonBruxellesFragment;
  * @author Maxime Gens
  *
  */
-public class MainActivity extends FragmentActivity implements ListLeonBruxellesFragment.OnLeonSelectedListener {
+public class MainActivity extends ActionBarActivity  implements ListLeonBruxellesFragment.OnLeonSelectedListener {
 
+	ActionBar actionBar;
     /** 
      * Called when the activity is first created. 
      */
@@ -26,17 +31,42 @@ public class MainActivity extends FragmentActivity implements ListLeonBruxellesF
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
-            }
+           }
+            
+           actionBar = getSupportActionBar();
+           actionBar.setDisplayHomeAsUpEnabled(true);
+
            ListLeonBruxellesFragment listLeonFragment = new ListLeonBruxellesFragment();
            listLeonFragment.setArguments(getIntent().getExtras());
            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, listLeonFragment).commit();
         }
     }
     
+    
+    
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+//    	switch (item.getItemId()) {
+//    	case R.id.
+//    		// Comportement du bouton "A Propos"
+//    		return true;
+//    	default:
+//    		return super.onOptionsItemSelected(item);
+//    	}
+    	return true;
+    }
 
     /**
      * Display or update a selected Leon information

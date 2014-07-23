@@ -9,13 +9,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,6 +43,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     ListView listViewLeon;
     TextView loaderText;
     ProgressBar loader;
+    ImageView iconLeon;
     boolean isConnected;
     LocationManager locationManager;
     
@@ -67,6 +66,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     	listViewLeon = (ListView)myInflatedView.findViewById(R.id.list_view_leon);
     	loader = (ProgressBar)myInflatedView.findViewById(R.id.progress_bar_list_leon);
     	loaderText = (TextView)myInflatedView.findViewById(R.id.text_progress_bar_list_leon);
+    	iconLeon = (ImageView)myInflatedView.findViewById(R.id.icon_leon_list_leon);
     	
     	// Recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre un boolean indiquant si le device est online ou non
     	// Si la liste n'a pas déjà été récupéré on la télécharge
@@ -155,6 +155,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		super.onPreExecute();
     		loader.setVisibility(View.VISIBLE);
     		loaderText.setVisibility(View.VISIBLE);
+    		iconLeon.setVisibility(View.VISIBLE);
     	}
 
     	@Override
@@ -185,9 +186,12 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		}
     		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
     		listViewLeon.setAdapter(adapterListLeon);
+    		Constantes.lesRestaurants = restaurants;
+    		
     		loader.setVisibility(View.INVISIBLE);
     		loaderText.setVisibility(View.INVISIBLE);
-    		Constantes.lesRestaurants = restaurants;
+    		iconLeon.setVisibility(View.INVISIBLE);
+    		
     	}
     }
     

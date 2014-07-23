@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
+import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
 
 public class DetailFragment extends Fragment {
@@ -38,6 +39,8 @@ public class DetailFragment extends Fragment {
     ImageView imgViewAccesHandicape;
     ProgressBar loaderPhoto;
     ImageView imageTel;
+    boolean isConnected;
+   
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -86,8 +89,13 @@ public class DetailFragment extends Fragment {
     public void updateDetailView(int id) {
         
         LeonDeBruxelles leLeon = Constantes.lesRestaurants.getLeonById(id);
-        RetreivePhotoLeonTask retreivePhotoLeonTask = new RetreivePhotoLeonTask();
-        retreivePhotoLeonTask.execute(leLeon.getPhoto());
+        isConnected = Connection.isConnectedInternet(getActivity());
+        if(isConnected)
+        {
+        	RetreivePhotoLeonTask retreivePhotoLeonTask = new RetreivePhotoLeonTask();
+            retreivePhotoLeonTask.execute(leLeon.getPhoto());
+        }
+
         
         textViewNomLeon.setText(Html.fromHtml(Constantes.TITRE_LEON+" <br/> "+leLeon.getNom()));
         textViewAdresseCompleteLeon.setText(leLeon.getAdresse() +" - "+ leLeon.getCodePostal()+ " " +leLeon.getVille());

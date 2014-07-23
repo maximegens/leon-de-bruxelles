@@ -5,6 +5,17 @@
     android:background="@color/green_leon_de_bruxelles"
     >
     
+    <ImageView 
+       android:id="@+id/icon_leon_list_leon"
+       android:contentDescription="@string/content_icon_leon"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:layout_above="@+id/progress_bar_list_leon"
+	   android:layout_centerHorizontal="true"
+	   android:layout_marginBottom="10dp"
+	   android:src="@drawable/icon_leon"
+	   android:visibility="invisible"
+    />
     <ProgressBar
 	   android:id="@+id/progress_bar_list_leon"
 	   style="?android:attr/progressBarStyleLarge"

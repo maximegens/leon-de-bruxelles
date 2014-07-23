@@ -8,14 +8,17 @@
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.CALL_PHONE"/>
 	<uses-feature android:name="android.hardware.telephony" android:required="false" />
-
+	
     <application
         android:icon="@drawable/icon_leon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name" 
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name="com.maxime.leondebruxelles.activity.MainActivity"
             android:label="@string/app_name" >
@@ -27,6 +30,8 @@
         <activity
             android:name="com.maxime.leondebruxelles.activity.PermissionGPSActivity"
             android:label="@string/app_name" />
+
+        
     </application>
 
 </manifest>
