@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.maxime.leondebruxelles.R;
-import com.maxime.leondebruxelles.activity.PermissionGPSActivity;
+import com.maxime.leondebruxelles.activity.AlertDialogCustom;
 import com.maxime.leondebruxelles.adapter.ListLeonAdapter;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.beans.Restaurants;
@@ -109,9 +108,8 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && Constantes.CHOICE_TO_ACTIVATE_GPS){
-			  Intent localIntent = new Intent(getActivity(), PermissionGPSActivity.class);
-			  localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			  startActivity(localIntent);
+			AlertDialogCustom alert = new AlertDialogCustom(getActivity());
+			alert.activateGPS();
 		}
 			
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -139,7 +137,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
         try {
             mCallback = (OnLeonSelectedListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()+ " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString()+ " must implement OnLeonSelectedListener");
         }
     }
 

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+    	xmlns:yourapp="http://schemas.android.com/apk/res-auto">
 
   <item
-    android:id="@+id/refresh"
-    android:icon="@drawable/ic_navigation_refresh"
-    android:title="@string/ac_refresh"
+    android:id="@+id/menu_website"
+    android:icon="@drawable/ic_action_web_site"
+    android:title="@string/icon_web"
+    yourapp:showAsAction="ifRoom"
+  />
+  <item
+    android:id="@+id/menu_geo"
+    android:icon="@drawable/ic_action_location_found"
+    android:title="@string/icon_geo"
+    yourapp:showAsAction="ifRoom"
+  />
+  <item
+    android:id="@+id/menu_share"
+    android:icon="@drawable/ic_action_share"
+    android:title="@string/icon_share"
+    yourapp:showAsAction="ifRoom"
+    yourapp:actionProviderClass="android.android.support.v7.widget.ShareActionProvider"
   />
 
 </menu>

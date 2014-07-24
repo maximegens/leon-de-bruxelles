@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,8 +16,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -84,6 +85,11 @@ public class DetailFragment extends Fragment {
         } else if (mCurrentId != -1) {
         	updateDetailView(mCurrentId);
         }
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     public void updateDetailView(int id) {

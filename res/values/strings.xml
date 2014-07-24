@@ -3,6 +3,9 @@
 <resources>
     <string name="mapskey">AIzaSyCUWJ-ZQSLB5jkHUAJlQRUAI_XWLxMCSrg</string>
     <string name="app_name">Léon de Bruxelles</string>
+    <string name="icon_web">Lien vers le site Internet</string>
+    <string name="icon_share">Partager</string>
+    <string name="icon_geo">Geolocalisation</string>
     <string name="waiting_for_download_list_leon">Chargement de la liste des restaurants en cours</string>
     
     <string name="detail_information">Accès disponible</string>

@@ -1078,13 +1078,17 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int handicape=0x7f020057;
-        public static final int ic_launcher=0x7f020058;
-        public static final int icon_leon=0x7f020059;
-        public static final int no_image_available=0x7f02005a;
-        public static final int parking=0x7f02005b;
-        public static final int shape_details=0x7f02005c;
-        public static final int shape_details_horaires=0x7f02005d;
-        public static final int tel=0x7f02005e;
+        public static final int ic_action_location_found=0x7f020058;
+        public static final int ic_action_share=0x7f020059;
+        public static final int ic_action_web_site=0x7f02005a;
+        public static final int ic_launcher=0x7f02005b;
+        public static final int icon_leon=0x7f02005c;
+        public static final int no_image_available=0x7f02005d;
+        public static final int parking=0x7f02005e;
+        public static final int shape_details=0x7f02005f;
+        public static final int shape_details_horaires=0x7f020060;
+        public static final int tel=0x7f020061;
+        public static final int website_button=0x7f020062;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -1138,6 +1142,9 @@ containing a value of this type.
         public static final int list_item=0x7f050029;
         public static final int list_leon_fragment=0x7f05004c;
         public static final int list_view_leon=0x7f050051;
+        public static final int menu_geo=0x7f050053;
+        public static final int menu_share=0x7f050054;
+        public static final int menu_website=0x7f050052;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -1271,14 +1278,17 @@ containing a value of this type.
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
         public static final int app_name=0x7f0a000e;
-        public static final int content_description_img_leon=0x7f0a0011;
-        public static final int content_handicape_img_leon=0x7f0a0015;
-        public static final int content_icon_leon=0x7f0a0013;
-        public static final int content_parking_img_leon=0x7f0a0012;
-        public static final int content_tel=0x7f0a0014;
-        public static final int detail_information=0x7f0a0010;
+        public static final int content_description_img_leon=0x7f0a0014;
+        public static final int content_handicape_img_leon=0x7f0a0018;
+        public static final int content_icon_leon=0x7f0a0016;
+        public static final int content_parking_img_leon=0x7f0a0015;
+        public static final int content_tel=0x7f0a0017;
+        public static final int detail_information=0x7f0a0013;
+        public static final int icon_geo=0x7f0a0011;
+        public static final int icon_share=0x7f0a0010;
+        public static final int icon_web=0x7f0a000f;
         public static final int mapskey=0x7f0a000d;
-        public static final int waiting_for_download_list_leon=0x7f0a000f;
+        public static final int waiting_for_download_list_leon=0x7f0a0012;
     }
     public static final class style {
         public static final int AppBaseTheme=0x7f0b008b;
