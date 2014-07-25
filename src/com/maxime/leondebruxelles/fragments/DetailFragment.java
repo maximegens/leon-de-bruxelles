@@ -30,6 +30,7 @@ import com.maxime.leondebruxelles.utils.Constantes;
 public class DetailFragment extends Fragment {
 	
     public final static String ARG_ID = "id";
+    public final static String ARG_PICTURE_LEON = "pictureLeon";
     int mCurrentId = -1;
     TextView textViewNomLeon;
     TextView textViewAdresseCompleteLeon;
@@ -41,8 +42,8 @@ public class DetailFragment extends Fragment {
     ProgressBar loaderPhoto;
     ImageView imageTel;
     boolean isConnected;
+    Bitmap pictureLeon = null;
    
-    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class DetailFragment extends Fragment {
     	
         if (savedInstanceState != null) {
         	mCurrentId = savedInstanceState.getInt(ARG_ID);
+        	pictureLeon = savedInstanceState.getParcelable(ARG_PICTURE_LEON);
         }
         
         textViewNomLeon = (TextView)myInflatedView.findViewById(R.id.detail_nom_leon);
@@ -62,6 +64,9 @@ public class DetailFragment extends Fragment {
         imgViewAccesHandicape = (ImageView)myInflatedView.findViewById(R.id.detail_handicape_leon);
         loaderPhoto = (ProgressBar)myInflatedView.findViewById(R.id.detail_progress_bar_photo_leon);
     	imageTel = (ImageView)myInflatedView.findViewById(R.id.detail_image_tel);
+    	
+    	if(pictureLeon != null)
+    		imgViewPhoto.setImageBitmap(pictureLeon);
     	
         imageTel.setOnClickListener(new OnClickListener() {
 			
@@ -96,12 +101,11 @@ public class DetailFragment extends Fragment {
         
         LeonDeBruxelles leLeon = Constantes.lesRestaurants.getLeonById(id);
         isConnected = Connection.isConnectedInternet(getActivity());
-        if(isConnected)
+        if(isConnected && pictureLeon == null)
         {
         	RetreivePhotoLeonTask retreivePhotoLeonTask = new RetreivePhotoLeonTask();
             retreivePhotoLeonTask.execute(leLeon.getPhoto());
         }
-
         
         textViewNomLeon.setText(Html.fromHtml(Constantes.TITRE_LEON+" <br/> "+leLeon.getNom()));
         textViewAdresseCompleteLeon.setText(leLeon.getAdresse() +" - "+ leLeon.getCodePostal()+ " " +leLeon.getVille());
@@ -120,6 +124,7 @@ public class DetailFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(ARG_ID, mCurrentId);
+        outState.putParcelable(ARG_PICTURE_LEON, pictureLeon);
     }
     
     /**
@@ -136,7 +141,7 @@ public class DetailFragment extends Fragment {
     	@Override
     	protected Bitmap doInBackground(String... params) {
     		String UrlPhoto = params[0];
-    		Bitmap bitmap = null;
+    		
             try{
                 URL url = new URL(UrlPhoto);
                 HttpURLConnection httpCon = 
@@ -144,12 +149,12 @@ public class DetailFragment extends Fragment {
                 if(httpCon.getResponseCode() != 200)
                     throw new Exception("Failed to connect");
                 InputStream is = httpCon.getInputStream();
-                bitmap = BitmapFactory.decodeStream(is);
-                return bitmap;
+                pictureLeon = BitmapFactory.decodeStream(is);
+                return pictureLeon;
             }catch(Exception e){
                 Log.e("Image","Failed to load image",e);
             }
-            return bitmap;
+            return pictureLeon;
     		
     	}
     	@Override

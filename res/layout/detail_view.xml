@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/shape_details"
+    android:background="@color/green_leon_de_bruxelles"
     android:paddingBottom="5dp"
     >
    <RelativeLayout 

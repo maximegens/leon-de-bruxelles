@@ -15,9 +15,9 @@
     yourapp:showAsAction="ifRoom"
   />
   <item
-    android:id="@+id/menu_share"
-    android:icon="@drawable/ic_action_share"
-    android:title="@string/icon_share"
+    android:id="@+id/menu_refresh"
+    android:icon="@drawable/ic_action_refresh"
+    android:title="@string/icon_refresh"
     yourapp:showAsAction="ifRoom"
     yourapp:actionProviderClass="android.android.support.v7.widget.ShareActionProvider"
   />

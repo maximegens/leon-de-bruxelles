@@ -6,6 +6,7 @@
     <string name="icon_web">Lien vers le site Internet</string>
     <string name="icon_share">Partager</string>
     <string name="icon_geo">Geolocalisation</string>
+    <string name="icon_refresh">Mise à jour de al liste des restaurants</string>
     <string name="waiting_for_download_list_leon">Chargement de la liste des restaurants en cours</string>
     
     <string name="detail_information">Accès disponible</string>

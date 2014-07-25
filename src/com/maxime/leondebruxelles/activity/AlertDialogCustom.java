@@ -42,6 +42,7 @@ public class AlertDialogCustom {
 	    }
 	 
 	 public void activateGPS(){
+		 System.out.println("Call ActivateGPS");
 		 AlertDialog.Builder localBuilder = new AlertDialog.Builder(context);
 		 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		 

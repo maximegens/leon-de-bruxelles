@@ -1,9 +1,7 @@
 package com.maxime.leondebruxelles.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -24,6 +22,7 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
 
 	ActionBar actionBar;
 	ShareActionProvider mShareActionProvider;
+	ListLeonBruxellesFragment listLeonFragment;
     /** 
      * Called when the activity is first created. 
      */
@@ -38,11 +37,11 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
            }
             
            actionBar = getSupportActionBar();
-           actionBar.setDisplayHomeAsUpEnabled(true);
            
-           ListLeonBruxellesFragment listLeonFragment = new ListLeonBruxellesFragment();
+           FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+           listLeonFragment = new ListLeonBruxellesFragment();
            listLeonFragment.setArguments(getIntent().getExtras());
-           getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, listLeonFragment).commit();
+           t.add(R.id.fragment_container, listLeonFragment).commit();
         }
     }
     
@@ -55,9 +54,6 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
     public boolean onCreateOptionsMenu(final Menu menu) {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.main, menu);
-    	MenuItem item = menu.findItem(R.id.menu_share);
-    	mShareActionProvider = new ShareActionProvider(this);
-        MenuItemCompat.setActionProvider(item,mShareActionProvider);
         return true;
     }
     
@@ -71,12 +67,8 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
     	case R.id.menu_geo :
     		alert.activateGPS();
     		return true;
-    	case R.id.menu_share :
-    		Intent sendIntent = new Intent();
-    		sendIntent.setAction(Intent.ACTION_SEND);
-    		sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-    		sendIntent.setType("text/plain");
-    		setShareIntent(sendIntent);
+    	case R.id.menu_refresh :
+    		listLeonFragment.updateListLeon();
     		return true;
     	default:
     		return super.onOptionsItemSelected(item);
@@ -103,13 +95,5 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
             transaction.addToBackStack(null);
             transaction.commit();
         }
-    }
-    
-    public void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-        	System.out.println("NOT NULL");
-            mShareActionProvider.setShareIntent(shareIntent);
-        }else
-        	System.out.println("------ NULL");
     }
 }

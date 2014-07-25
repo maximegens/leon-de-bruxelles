@@ -71,13 +71,15 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     	// Si la liste n'a pas déjà été récupéré on la télécharge
     	
     	if(savedInstanceState == null){
-	    	isConnected = Connection.isConnectedInternet(getActivity());
-		    listLeon = new RetreiveListLeonTask();    
-		    listLeon.execute(isConnected);
+    		updateListLeon();
     	}else{
-    		lesLeons = savedInstanceState.getParcelableArrayList("listLeonParcelable");
-    		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
-    		listViewLeon.setAdapter(adapterListLeon);
+    			lesLeons = savedInstanceState.getParcelableArrayList("listLeonParcelable");
+    			if(lesLeons.size() == 0){
+    				updateListLeon();
+    			}else{
+    				adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
+    				listViewLeon.setAdapter(adapterListLeon);
+    			}
     	}
     	
         listViewLeon.setOnItemClickListener(new OnItemClickListener() {
@@ -182,8 +184,10 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     			}
     			lesLeons.add(leon);
     		}
-    		adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
-    		listViewLeon.setAdapter(adapterListLeon);
+    		if(getActivity() != null){
+    			adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
+    			listViewLeon.setAdapter(adapterListLeon);
+    		}
     		Constantes.lesRestaurants = restaurants;
     		
     		loader.setVisibility(View.INVISIBLE);
@@ -191,6 +195,12 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		iconLeon.setVisibility(View.INVISIBLE);
     		
     	}
+    }
+    
+    public void updateListLeon(){
+    	isConnected = Connection.isConnectedInternet(getActivity());
+	    listLeon = new RetreiveListLeonTask();    
+	    listLeon.execute(isConnected);
     }
     
     /** 
