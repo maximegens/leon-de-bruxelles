@@ -71,7 +71,12 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     	// Si la liste n'a pas déjà été récupéré on la télécharge
     	
     	if(savedInstanceState == null){
-    		updateListLeon();
+    		if(Constantes.lesRestaurants == null)
+    				updateListLeon();
+    		else{
+    			adapterListLeon = new ListLeonAdapter(getActivity(), Constantes.lesRestaurants.restaurants);
+				listViewLeon.setAdapter(adapterListLeon);
+    		}
     	}else{
     			lesLeons = savedInstanceState.getParcelableArrayList("listLeonParcelable");
     			if(lesLeons.size() == 0){
@@ -142,6 +147,12 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
             throw new ClassCastException(activity.toString()+ " must implement OnLeonSelectedListener");
         }
     }
+    
+    public void updateListLeon(){
+    	isConnected = Connection.isConnectedInternet(getActivity());
+	    listLeon = new RetreiveListLeonTask();    
+	    listLeon.execute(isConnected);
+    }
 
     /**
      * Récupére la liste des Leons de Bruxelles pour les afficher à l'utilisateur.
@@ -195,12 +206,6 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		iconLeon.setVisibility(View.INVISIBLE);
     		
     	}
-    }
-    
-    public void updateListLeon(){
-    	isConnected = Connection.isConnectedInternet(getActivity());
-	    listLeon = new RetreiveListLeonTask();    
-	    listLeon.execute(isConnected);
     }
     
     /** 

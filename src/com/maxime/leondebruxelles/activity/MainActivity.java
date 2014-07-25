@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
     		alert.activateGPS();
     		return true;
     	case R.id.menu_refresh :
-    		listLeonFragment.updateListLeon();
+    		//listLeonFragment.updateListLeon();
     		return true;
     	default:
     		return super.onOptionsItemSelected(item);
