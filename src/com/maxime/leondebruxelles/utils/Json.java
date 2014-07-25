@@ -14,23 +14,22 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.res.AssetManager;
 
 /**
- * Retreive a Json file and parse this file. 
+ * Télécharge et parse des fichiers Json.
  * @author Maxime Gens
  *
  */
 public class Json {
 	
 	/**
-	 * Retreive a Json file.
-	 * @param url URl link to download
-	 * @return a json string
+	 * Télécharge un fichier json.
+	 * @param url L'URL du Json à télécharger.
+	 * @return String Le json en string.
 	 */
 	public static String getJsonFromURL(String url){
 		
 		InputStream is = null;
 		String json = "";
 		
-		// Call HTTP
 		try {	    	
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(url);
@@ -41,7 +40,6 @@ public class Json {
 			return null;
 		}
 	    
-		// Read response to string
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"utf-8"),8);
 			System.out.println(is);
@@ -58,6 +56,12 @@ public class Json {
 		}
 	}
 	
+	/**
+	 * Charge un fichier json depuis les Assets de l'application.
+	 * @param assetManager Le AssetManager de l'application.
+	 * @param nameFile Le nom du ficher à charger.
+	 * @return String Le json chargé en string.
+	 */
 	public static String getJsonFromAssets(AssetManager assetManager,String nameFile){
 		String json = "";
 		

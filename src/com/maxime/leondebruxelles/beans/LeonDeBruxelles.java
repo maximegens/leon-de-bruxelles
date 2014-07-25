@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Bean Léon de Bruxelles, cette classe contient toutes les informations concernant un Léon de Bruxelles.
+ * @author Maxime Gens
+ *
+ */
 @SuppressLint("ParcelCreator")
 public class LeonDeBruxelles implements Parcelable{
 

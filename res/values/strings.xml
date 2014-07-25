@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+    <!-- Paramétres de l'application -->
     <string name="mapskey">AIzaSyCUWJ-ZQSLB5jkHUAJlQRUAI_XWLxMCSrg</string>
     <string name="app_name">Léon de Bruxelles</string>
+    
+    <!-- ActionBar de l'application -->
     <string name="icon_web">Lien vers le site Internet</string>
     <string name="icon_share">Partager</string>
     <string name="icon_geo">Geolocalisation</string>
     <string name="icon_refresh">Mise à jour de al liste des restaurants</string>
+    
+    <!-- Fragment ListLeonBruxellesFragment -->
     <string name="waiting_for_download_list_leon">Chargement de la liste des restaurants en cours</string>
     
+    <!-- Fragment DetailFragment -->
     <string name="detail_information">Accès disponible</string>
     <string name="content_description_img_leon">Photographie du Leon</string>
     <string name="content_parking_img_leon">Pictogramme place de parking</string>
     <string name="content_icon_leon">Icone Leon de Bruxelles</string>
     <string name="content_tel">Appelez le Léon</string>
     <string name="content_handicape_img_leon">Pictogramme acces handicape</string>
+    
 </resources>

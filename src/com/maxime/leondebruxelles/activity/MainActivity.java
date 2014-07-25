@@ -14,7 +14,7 @@ import com.maxime.leondebruxelles.fragments.DetailFragment;
 import com.maxime.leondebruxelles.fragments.ListLeonBruxellesFragment;
 
 /**
- * MainActivity.
+ * MainActivity : Activity principalement lancée au démarrage de l'application.
  * @author Maxime Gens
  *
  */
@@ -23,13 +23,11 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
 	ActionBar actionBar;
 	ShareActionProvider mShareActionProvider;
 	ListLeonBruxellesFragment listLeonFragment;
-    /** 
-     * Called when the activity is first created. 
-     */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_detail);
+        setContentView(R.layout.main_activity);
 
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
@@ -50,6 +48,9 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
 		super.onPause();
 	}
 	
+	/** 
+	 * Creation du Menu.
+	 **/
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
     	MenuInflater inflater = getMenuInflater();
@@ -57,6 +58,9 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
         return true;
     }
     
+    /** 
+     * Gestion des items du Menu.
+     **/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	AlertDialogCustom alert = new AlertDialogCustom(this);
@@ -67,16 +71,13 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
     	case R.id.menu_geo :
     		alert.activateGPS();
     		return true;
-    	case R.id.menu_refresh :
-    		//listLeonFragment.updateListLeon();
-    		return true;
     	default:
     		return super.onOptionsItemSelected(item);
     	}
     }
 
     /**
-     * Display or update a selected Leon information
+     * Affiche et met à jour le fragment contenant le détails d'un restaurant.
      */
     public void onLeonSelected(int id) {
 

@@ -9,14 +9,26 @@ import android.net.Uri;
 
 import com.maxime.leondebruxelles.utils.Constantes;
 
+/**
+ * Classe contenant l'ensemble des AlertDialogs de l'application.
+ * @author Maxime Gens
+ *
+ */
 public class AlertDialogCustom {
 
 	Context context;
 	
+	/**
+	 * Constructeur de la class AlertDialogCustom
+	 * @param context Le contexte de l'activity dans laquelle afficher l'AlertDialog
+	 */
 	public AlertDialogCustom(Context context){
 		this.context = context;
 	}
 	
+	/**
+	 * Affiche une AlertDialog proposant d'ouvrir une page internet vers le site Léon de Bruxelles.
+	 */
 	 public void showWebSite(){
 		 AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 	    	alertDialog
@@ -41,6 +53,10 @@ public class AlertDialogCustom {
 	        alertDialog.create().show();
 	    }
 	 
+	 /**
+	  * Affiche une AlertDialog proposant d'activer le GPS si celui-i n'est pas activé.
+	  * Sinon indique sur le GPS est activé. 
+	  */
 	 public void activateGPS(){
 		 System.out.println("Call ActivateGPS");
 		 AlertDialog.Builder localBuilder = new AlertDialog.Builder(context);
@@ -73,7 +89,6 @@ public class AlertDialogCustom {
 		                });
 			 
 		 }
-
 	        localBuilder.create().show();
 	    }
 }

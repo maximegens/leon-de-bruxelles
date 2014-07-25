@@ -7,15 +7,15 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 
 /**
- * Indicate a network status of device
+ * Informe sur le status internet du device.
  * 
  */
 public class Connection
 {
 	/**
-	 * indicate if device is connected to internet
-	 * @param activity Activity which to ask a internet test.
-	 * @return a boolean if a device is connected
+	 * Indique si le device est connecté à Internet
+	 * @param activity L'activity qui demande le test de connection à internet
+	 * @return boolean indique si le device est connecté ou non.
 	 */
     public static boolean isConnectedInternet(Activity activity)
     {

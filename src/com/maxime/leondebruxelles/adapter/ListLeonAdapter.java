@@ -18,8 +18,8 @@ import com.maxime.leondebruxelles.utils.Constantes;
 import com.maxime.leondebruxelles.utils.Conversion;
 
 /**
- * Adaptateur permettant de mettre en forme et d'afficher chaque item, dans un style personnalisÃ©, de la listeView pour la page d'accueil.
- *
+ * Adapter permettant d'afficher la liste des restaurants Léon de Bruxelles.
+ * 
  */
 public class ListLeonAdapter extends BaseAdapter {
 
@@ -27,6 +27,11 @@ public class ListLeonAdapter extends BaseAdapter {
 	Context ctx;
 	LayoutInflater inflater;
 
+	/**
+	 * Constructeur de l'Adapter.
+	 * @param context Le contexte de l'activity contenant l'adapter.
+	 * @param lesleons
+	 */
 	public ListLeonAdapter(Context context,List<LeonDeBruxelles> lesleons) {
 		inflater = LayoutInflater.from(context);
 		Collections.sort(lesleons, new SortByDistance());
@@ -76,11 +81,15 @@ public class ListLeonAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		/** 
+		 * Verification de la distance.
+		 * Si la distance est égal à zéro, le GPS n'est pas pas activé.
+		 * **/
 		if(lesleons.get(position).getDistanceMeterFromUser() == 0)
 			holder.Distance.setText("");
-		else if(lesleons.get(position).getDistanceMeterFromUser() > Constantes.ONE_KILOMETER)
+		else if(lesleons.get(position).getDistanceMeterFromUser() > Constantes.UN_KILOMETRE)
 			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Km");
-		else if(lesleons.get(position).getDistanceMeterFromUser() < Constantes.ONE_KILOMETER)
+		else if(lesleons.get(position).getDistanceMeterFromUser() < Constantes.UN_KILOMETRE)
 			holder.Distance.setText(Conversion.metreToKm(lesleons.get(position).getDistanceMeterFromUser())+" Métres");
 		else
 			holder.Distance.setText("Impossible de calculer la distance");

@@ -32,8 +32,14 @@ import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
 import com.maxime.leondebruxelles.utils.Json;
 
+/**
+ * Fragment Liste des Léon de Bruxelles : classe représentante la vue affichant la liste des restaurants.
+ * @author Maxime Gens
+ *
+ */
 public class ListLeonBruxellesFragment extends Fragment implements LocationListener{
 	
+	boolean isConnected;
 	OnLeonSelectedListener mCallback;
     ArrayList<LeonDeBruxelles> lesLeons;  
 	Restaurants restaurants;
@@ -43,11 +49,20 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     TextView loaderText;
     ProgressBar loader;
     ImageView iconLeon;
-    boolean isConnected;
     LocationManager locationManager;
     
+    /**
+     * Interface OnLeonSelectedListener : Permet au fragment de communiquer avec l'acitivty.
+     * @author A577163
+     *
+     */
     public interface OnLeonSelectedListener {
-        public void onLeonSelected(int position);
+    	
+    	/**
+    	 * Informe l'activity du restaurant sélectionné par son ID.
+    	 * @param position
+    	 */
+        public void onLeonSelected(int idLeon);
     }
 
     @Override
@@ -67,14 +82,18 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     	loaderText = (TextView)myInflatedView.findViewById(R.id.text_progress_bar_list_leon);
     	iconLeon = (ImageView)myInflatedView.findViewById(R.id.icon_leon_list_leon);
     	
-    	// Recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre un boolean indiquant si le device est online ou non
-    	// Si la liste n'a pas déjà été récupéré on la télécharge
+    	/**
+    	 * Vérification de l'existante d'un liste de restaurant préalablement chargée.
+    	 * Recupere la liste des leon de bruxelles via une Asynctask en lui passant en parametre 
+    	 * un boolean indiquant si le device est online ou non
+    	 * 
+    	 */ 	
     	
     	if(savedInstanceState == null){
-    		if(Constantes.lesRestaurants == null)
+    		if(Constantes.LES_RESTAURANTS == null)
     				updateListLeon();
     		else{
-    			adapterListLeon = new ListLeonAdapter(getActivity(), Constantes.lesRestaurants.restaurants);
+    			adapterListLeon = new ListLeonAdapter(getActivity(), Constantes.LES_RESTAURANTS.restaurants);
 				listViewLeon.setAdapter(adapterListLeon);
     		}
     	}else{
@@ -189,8 +208,8 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     		//Calcul de la distance vers le Leon et ajout de la liste a l'adapter
     		lesLeons.clear();
     		for (LeonDeBruxelles leon : restaurants.restaurants) {
-    			if(Constantes.locationUser != null){
-    				Location.distanceBetween(Constantes.locationUser.getLatitude(),Constantes.locationUser.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
+    			if(Constantes.LOCATION_USER != null){
+    				Location.distanceBetween(Constantes.LOCATION_USER.getLatitude(),Constantes.LOCATION_USER.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
     				leon.setDistanceMeterFromUser(distance[0]);
     			}
     			lesLeons.add(leon);
@@ -199,7 +218,7 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     			adapterListLeon = new ListLeonAdapter(getActivity(), lesLeons);
     			listViewLeon.setAdapter(adapterListLeon);
     		}
-    		Constantes.lesRestaurants = restaurants;
+    		Constantes.LES_RESTAURANTS = restaurants;
     		
     		loader.setVisibility(View.INVISIBLE);
     		loaderText.setVisibility(View.INVISIBLE);
@@ -215,11 +234,11 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
 	@Override
 	public void onLocationChanged(Location location) {
 		float[] distance = new float[3];
-		Constantes.locationUser = location;
+		Constantes.LOCATION_USER = location;
 		lesLeons.clear();
 		
-		if(Constantes.lesRestaurants != null){
-			for (LeonDeBruxelles leon : Constantes.lesRestaurants.restaurants ) {
+		if(Constantes.LES_RESTAURANTS != null){
+			for (LeonDeBruxelles leon : Constantes.LES_RESTAURANTS.restaurants ) {
 				Location.distanceBetween(location.getLatitude(),location.getLongitude(), Double.parseDouble(leon.getLatitude()), Double.parseDouble(leon.getLongitude()), distance);
 				leon.setDistanceMeterFromUser(distance[0]);
 				lesLeons.add(leon);

@@ -27,11 +27,18 @@ import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
 
+/**
+ * Fragment Detail : classe représentante la vue affichant le détails d'un Léon de Bruxelles.
+ * @author Maxime Gens
+ *
+ */
 public class DetailFragment extends Fragment {
 	
     public final static String ARG_ID = "id";
     public final static String ARG_PICTURE_LEON = "pictureLeon";
+    boolean isConnected;
     int mCurrentId = -1;
+    Bitmap pictureLeon = null;
     TextView textViewNomLeon;
     TextView textViewAdresseCompleteLeon;
     TextView textViewHoraires;
@@ -41,8 +48,6 @@ public class DetailFragment extends Fragment {
     ImageView imgViewAccesHandicape;
     ProgressBar loaderPhoto;
     ImageView imageTel;
-    boolean isConnected;
-    Bitmap pictureLeon = null;
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -69,7 +74,6 @@ public class DetailFragment extends Fragment {
     		imgViewPhoto.setImageBitmap(pictureLeon);
     	
         imageTel.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				final Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + textViewTelLeon.getText().toString()));
@@ -97,9 +101,13 @@ public class DetailFragment extends Fragment {
         super.onAttach(activity);
     }
 
+    /**
+     * Mise à jour de la vue représentant le détail du Léon de Bruxelles correspond à l'ID passé en paramétre.
+     * @param id L'ID du restraurant à afficher.
+     */
     public void updateDetailView(int id) {
         
-        LeonDeBruxelles leLeon = Constantes.lesRestaurants.getLeonById(id);
+        LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
         isConnected = Connection.isConnectedInternet(getActivity());
         if(isConnected && pictureLeon == null)
         {
@@ -128,7 +136,7 @@ public class DetailFragment extends Fragment {
     }
     
     /**
-     * Récupére la liste des Leons de Bruxelles pour les afficher à l'utilisateur.
+     * AsyncTack : Télécharge l'image représentatif du restaurant.
      * 
      */
     private class RetreivePhotoLeonTask extends AsyncTask<String, String, Bitmap> {
@@ -147,7 +155,7 @@ public class DetailFragment extends Fragment {
                 HttpURLConnection httpCon = 
                 (HttpURLConnection)url.openConnection();
                 if(httpCon.getResponseCode() != 200)
-                    throw new Exception("Failed to connect");
+                    throw new Exception("Failed to connect : responce is not 200");
                 InputStream is = httpCon.getInputStream();
                 pictureLeon = BitmapFactory.decodeStream(is);
                 return pictureLeon;
