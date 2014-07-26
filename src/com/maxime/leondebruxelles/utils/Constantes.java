@@ -18,5 +18,6 @@ public class Constantes {
 	public static boolean CHOICE_TO_ACTIVATE_GPS = true;
 	public static Restaurants LES_RESTAURANTS = null;
 	public static Location LOCATION_USER = null;
+	public static Integer NB_PANEL = null;
 
 }

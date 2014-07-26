@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.maxime.leondebruxelles.R;
@@ -37,43 +38,49 @@ public class DetailFragment extends Fragment {
     public final static String ARG_ID = "id";
     public final static String ARG_PICTURE_LEON = "pictureLeon";
     boolean isConnected;
-    int mCurrentId = -1;
+    int mCurrentIdLeon = -1;
+    RelativeLayout myLayout;
     Bitmap pictureLeon = null;
+    TextView textViewSelectionLeon;
     TextView textViewNomLeon;
     TextView textViewAdresseCompleteLeon;
     TextView textViewHoraires;
     TextView textViewTelLeon;
+    TextView textViewInformationsLeon;
     ImageView imgViewPhoto;
+    ImageView imgViewtel;
     ImageView imgViewParking;
     ImageView imgViewAccesHandicape;
     ProgressBar loaderPhoto;
-    ImageView imageTel;
    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
     	
     	View myInflatedView = inflater.inflate(R.layout.detail_view, container,false);
+    	myLayout = new RelativeLayout(getActivity());
     	
         if (savedInstanceState != null) {
-        	mCurrentId = savedInstanceState.getInt(ARG_ID);
+        	mCurrentIdLeon = savedInstanceState.getInt(ARG_ID);
         	pictureLeon = savedInstanceState.getParcelable(ARG_PICTURE_LEON);
         }
         
+        textViewSelectionLeon = (TextView)myInflatedView.findViewById(R.id.detail_selection_leon);
         textViewNomLeon = (TextView)myInflatedView.findViewById(R.id.detail_nom_leon);
         textViewAdresseCompleteLeon = (TextView)myInflatedView.findViewById(R.id.detail_adrese_complete_leon);
         textViewHoraires = (TextView)myInflatedView.findViewById(R.id.detail_horaires_leon);
         textViewTelLeon = (TextView)myInflatedView.findViewById(R.id.detail_tel_leon);
+        textViewInformationsLeon = (TextView)myInflatedView.findViewById(R.id.detail_informations);
         imgViewPhoto = (ImageView)myInflatedView.findViewById(R.id.detail_photo_leon);
         imgViewParking = (ImageView)myInflatedView.findViewById(R.id.detail_parking_leon);
         imgViewAccesHandicape = (ImageView)myInflatedView.findViewById(R.id.detail_handicape_leon);
+        imgViewtel = (ImageView)myInflatedView.findViewById(R.id.detail_image_tel);
         loaderPhoto = (ProgressBar)myInflatedView.findViewById(R.id.detail_progress_bar_photo_leon);
-    	imageTel = (ImageView)myInflatedView.findViewById(R.id.detail_image_tel);
     	
     	if(pictureLeon != null)
     		imgViewPhoto.setImageBitmap(pictureLeon);
     	
-        imageTel.setOnClickListener(new OnClickListener() {
+    	imgViewtel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				final Intent telIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + textViewTelLeon.getText().toString()));
@@ -91,8 +98,8 @@ public class DetailFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
         	updateDetailView(args.getInt(ARG_ID));
-        } else if (mCurrentId != -1) {
-        	updateDetailView(mCurrentId);
+        } else if (mCurrentIdLeon != -1) {
+        	updateDetailView(mCurrentIdLeon);
         }
     }
     
@@ -106,9 +113,17 @@ public class DetailFragment extends Fragment {
      * @param id L'ID du restraurant à afficher.
      */
     public void updateDetailView(int id) {
+    	
+    	textViewSelectionLeon.setVisibility(View.INVISIBLE);
         
         LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
         isConnected = Connection.isConnectedInternet(getActivity());
+        
+        if(Constantes.NB_PANEL == 2)
+        	pictureLeon = null;
+        
+        imgViewPhoto.setVisibility(View.VISIBLE);
+        
         if(isConnected && pictureLeon == null)
         {
         	RetreivePhotoLeonTask retreivePhotoLeonTask = new RetreivePhotoLeonTask();
@@ -120,18 +135,23 @@ public class DetailFragment extends Fragment {
         textViewHoraires.setText(Html.fromHtml(leLeon.getInfosSupplementaires()));
         textViewTelLeon.setText(leLeon.getTelephone());
            
-        if(leLeon.getParking().equals("1"))
+        if(leLeon.getParking().equals("1")){
         	imgViewParking.setVisibility(View.VISIBLE);
+        }
         if(leLeon.getAccesHandicape().equals("1"))
         	imgViewAccesHandicape.setVisibility(View.VISIBLE);
         
-        mCurrentId = id;
+        textViewHoraires.setVisibility(View.VISIBLE);
+        textViewInformationsLeon.setVisibility(View.VISIBLE);
+        imgViewtel.setVisibility(View.VISIBLE);
+        
+        mCurrentIdLeon = id;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(ARG_ID, mCurrentId);
+        outState.putInt(ARG_ID, mCurrentIdLeon);
         outState.putParcelable(ARG_PICTURE_LEON, pictureLeon);
     }
     

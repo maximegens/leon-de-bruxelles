@@ -14,6 +14,7 @@
     <string name="waiting_for_download_list_leon">Chargement de la liste des restaurants en cours</string>
     
     <!-- Fragment DetailFragment -->
+    <string name="detail_selection">Sélectionner un restaurant dans la liste. </string>
     <string name="detail_information">Accès disponible</string>
     <string name="content_description_img_leon">Photographie du Leon</string>
     <string name="content_parking_img_leon">Pictogramme place de parking</string>

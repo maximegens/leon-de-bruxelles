@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.fragments.DetailFragment;
 import com.maxime.leondebruxelles.fragments.ListLeonBruxellesFragment;
+import com.maxime.leondebruxelles.utils.Constantes;
 
 /**
  * MainActivity : Activity principalement lancée au démarrage de l'application.
@@ -29,17 +30,23 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        /** Il y a un panel afficher - SmartPhone **/
         if (findViewById(R.id.fragment_container) != null) {
+        	
+        	Constantes.NB_PANEL = 1;
             if (savedInstanceState != null) {
                 return;
            }
             
            actionBar = getSupportActionBar();
-           
            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
            listLeonFragment = new ListLeonBruxellesFragment();
            listLeonFragment.setArguments(getIntent().getExtras());
            t.add(R.id.fragment_container, listLeonFragment).commit();
+
+        }else{
+        	/** Il y a deux panels affichés - tablette **/
+        	Constantes.NB_PANEL = 2;	
         }
     }
     

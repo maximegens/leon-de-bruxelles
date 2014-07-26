@@ -42,7 +42,6 @@ public class Json {
 	    
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"utf-8"),8);
-			System.out.println(is);
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {

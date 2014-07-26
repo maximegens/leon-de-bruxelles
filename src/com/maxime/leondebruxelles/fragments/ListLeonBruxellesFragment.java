@@ -52,8 +52,8 @@ public class ListLeonBruxellesFragment extends Fragment implements LocationListe
     LocationManager locationManager;
     
     /**
-     * Interface OnLeonSelectedListener : Permet au fragment de communiquer avec l'acitivty.
-     * @author A577163
+     * Interface OnLeonSelectedListener : Permet au fragment de communiquer avec l'activity.
+     * @author Maxime Gens
      *
      */
     public interface OnLeonSelectedListener {
