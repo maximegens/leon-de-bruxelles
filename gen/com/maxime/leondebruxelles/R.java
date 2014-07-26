@@ -1141,6 +1141,7 @@ containing a value of this type.
         public static final int list_leon_fragment=0x7f050051;
         public static final int list_view_leon=0x7f05004f;
         public static final int menu_geo=0x7f050054;
+        public static final int menu_share=0x7f050055;
         public static final int menu_website=0x7f050053;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;

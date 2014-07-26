@@ -62,6 +62,10 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
     public boolean onCreateOptionsMenu(final Menu menu) {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.main, menu);
+    	
+        if(menu != null){
+     	   menu.findItem(R.id.menu_share).setVisible(false);
+        }
         return true;
     }
     

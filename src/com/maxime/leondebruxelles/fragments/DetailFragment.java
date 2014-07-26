@@ -15,6 +15,9 @@ import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.maxime.leondebruxelles.R;
+import com.maxime.leondebruxelles.activity.AlertDialogCustom;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.utils.Connection;
 import com.maxime.leondebruxelles.utils.Constantes;
@@ -54,12 +58,18 @@ public class DetailFragment extends Fragment {
     ProgressBar loaderPhoto;
    
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+    
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
     	
     	View myInflatedView = inflater.inflate(R.layout.detail_view, container,false);
     	myLayout = new RelativeLayout(getActivity());
-    	
+
         if (savedInstanceState != null) {
         	mCurrentIdLeon = savedInstanceState.getInt(ARG_ID);
         	pictureLeon = savedInstanceState.getParcelable(ARG_PICTURE_LEON);
@@ -106,6 +116,25 @@ public class DetailFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+       if(menu != null){
+    	   menu.findItem(R.id.menu_share).setVisible(true);
+       }
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	AlertDialogCustom alert = new AlertDialogCustom(getActivity());
+    	switch (item.getItemId()) {
+    	case R.id.menu_share :
+    		alert.share(mCurrentIdLeon);
+    		return true;
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
     }
 
     /**

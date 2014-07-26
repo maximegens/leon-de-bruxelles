@@ -301,6 +301,7 @@ int id list_item 0x7f050029
 int id list_leon_fragment 0x7f050051
 int id list_view_leon 0x7f05004f
 int id menu_geo 0x7f050054
+int id menu_share 0x7f050055
 int id menu_website 0x7f050053
 int id middle 0x7f050012
 int id never 0x7f050009

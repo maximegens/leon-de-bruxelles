@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.text.Html;
 
+import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
 import com.maxime.leondebruxelles.utils.Constantes;
 
 /**
@@ -26,6 +28,19 @@ public class AlertDialogCustom {
 		this.context = context;
 	}
 	
+	public void share(int idLeon){
+		Intent sendIntent = new Intent();
+		sendIntent.setAction(Intent.ACTION_SEND);
+		if(idLeon == -1)
+			sendIntent.putExtra(Intent.EXTRA_TEXT, "Télécharger l'Application Léon de Bruxelles sur le Play Store");
+		else{
+			LeonDeBruxelles leon = Constantes.LES_RESTAURANTS.getLeonById(idLeon);
+			String content = "Léon de Bruxelles "+leon.getVille()+"<br/>"+leon.getInfosSupplementaires();
+			sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(content));
+		}
+		sendIntent.setType("text/plain");
+		context.startActivity(Intent.createChooser(sendIntent,"Partager..." ));
+	}
 	/**
 	 * Affiche une AlertDialog proposant d'ouvrir une page internet vers le site Léon de Bruxelles.
 	 */
