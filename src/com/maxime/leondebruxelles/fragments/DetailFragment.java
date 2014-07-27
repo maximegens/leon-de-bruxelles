@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.MapFragment;
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.activity.AlertDialogCustom;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
@@ -55,6 +56,7 @@ public class DetailFragment extends Fragment {
     ImageView imgViewtel;
     ImageView imgViewParking;
     ImageView imgViewAccesHandicape;
+    MapFragment map;
     ProgressBar loaderPhoto;
    
     @Override
@@ -97,10 +99,11 @@ public class DetailFragment extends Fragment {
 				startActivity(telIntent);
 			}
 		});
-        
+    	
         return myInflatedView;
     }
-
+    
+    
     @Override
     public void onStart() {
         super.onStart();
@@ -113,10 +116,12 @@ public class DetailFragment extends Fragment {
         }
     }
     
+    
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
+    
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -144,7 +149,7 @@ public class DetailFragment extends Fragment {
     public void updateDetailView(int id) {
     	
     	textViewSelectionLeon.setVisibility(View.INVISIBLE);
-        
+    	
         LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
         isConnected = Connection.isConnectedInternet(getActivity());
         
@@ -173,6 +178,17 @@ public class DetailFragment extends Fragment {
         textViewHoraires.setVisibility(View.VISIBLE);
         textViewInformationsLeon.setVisibility(View.VISIBLE);
         imgViewtel.setVisibility(View.VISIBLE);
+        
+/** Ce code fonctionne sous Tablette **/
+/**      GoogleMap map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+    	LatLng positionLeon = new LatLng(Double.parseDouble(leLeon.getLatitude()),Double.parseDouble(leLeon.getLongitude()));
+        map.setMyLocationEnabled(true);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLeon, 13));
+        map.addMarker(new MarkerOptions()
+                .title(leLeon.getNom())
+                .snippet("The most populous city in Australia.")
+                .position(positionLeon));
+**/    
         
         mCurrentIdLeon = id;
     }

@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
 
         }else{
         	/** Il y a deux panels affichés - tablette **/
-        	Constantes.NB_PANEL = 2;	
+        	Constantes.NB_PANEL = 2;
         }
     }
     
@@ -54,6 +54,8 @@ public class MainActivity extends ActionBarActivity  implements ListLeonBruxelle
 	public void onPause() {
 		super.onPause();
 	}
+	
+	
 	
 	/** 
 	 * Creation du Menu.

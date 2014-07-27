@@ -28,6 +28,10 @@ public class AlertDialogCustom {
 		this.context = context;
 	}
 	
+	/**
+	 * Permet de partager le restaurants sélectionné. Si aucun restaurant sélectionné (tablette) propose de partager le lien de téléchargement de l'application.
+	 * @param idLeon L'ID du restaurant a partager.
+	 */
 	public void share(int idLeon){
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
@@ -41,6 +45,7 @@ public class AlertDialogCustom {
 		sendIntent.setType("text/plain");
 		context.startActivity(Intent.createChooser(sendIntent,"Partager..." ));
 	}
+	
 	/**
 	 * Affiche une AlertDialog proposant d'ouvrir une page internet vers le site Léon de Bruxelles.
 	 */

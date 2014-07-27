@@ -13,7 +13,7 @@
     	android:layout_height="wrap_content"
     	android:layout_marginBottom="5dp"
     	android:paddingBottom="5dp">
-    	
+
        <TextView
 		        android:id="@+id/detail_selection_leon"
 		        android:layout_width="wrap_content"
@@ -151,7 +151,17 @@
 		        android:src="@drawable/handicape" 
 		        android:visibility="invisible"/>
 
-
+		    <!-- Ce code fonctionne sous tablette  -->
+<!-- 			<fragment
+			    android:id="@+id/map"
+			    android:layout_margin="5dp"
+			    android:layout_below="@+id/detail_parking_leon"
+			    android:name="com.google.android.gms.maps.SupportMapFragment"
+			    android:layout_width="match_parent"
+			    android:layout_height="300dp" 
+			    /> -->
     	
 	</RelativeLayout>	
+	
+
 </ScrollView>		
