@@ -21,5 +21,6 @@
     <string name="content_icon_leon">Icone Leon de Bruxelles</string>
     <string name="content_tel">Appelez le Léon</string>
     <string name="content_handicape_img_leon">Pictogramme acces handicape</string>
+    <string name="detail_button_itineraire">S\'y rendre</string>
     
 </resources>

@@ -138,29 +138,45 @@
 		        android:layout_below="@+id/detail_informations"
 		        android:contentDescription="@string/content_parking_img_leon"
 		        android:src="@drawable/parking" 
-		        android:visibility="invisible"/>
+		        android:visibility="visible"/>
 	
 		    <ImageView
 		        android:id="@+id/detail_handicape_leon"
 		        android:layout_width="50dp"
 		        android:layout_height="50dp"
-		        android:layout_below="@+id/detail_informations"
-		        android:layout_toRightOf="@+id/detail_parking_leon"
-		        android:layout_alignParentBottom="true"
+		        android:layout_marginLeft="5dp"
+		        android:layout_below="@+id/detail_parking_leon"
 		        android:contentDescription="@string/content_handicape_img_leon"
 		        android:src="@drawable/handicape" 
-		        android:visibility="invisible"/>
-
-		    <!-- Ce code fonctionne sous tablette  -->
-<!-- 			<fragment
-			    android:id="@+id/map"
-			    android:layout_margin="5dp"
-			    android:layout_below="@+id/detail_parking_leon"
-			    android:name="com.google.android.gms.maps.SupportMapFragment"
-			    android:layout_width="match_parent"
-			    android:layout_height="300dp" 
-			    /> -->
-    	
+		        android:visibility="visible"/>
+			    
+		    <Button
+		        android:id="@+id/detail_button_itineraire"
+				android:layout_margin="5dp"
+				android:layout_below="@+id/detail_handicape_leon"
+				android:gravity="center_horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:text="@string/detail_button_itineraire" 
+				android:visibility="invisible"/>
+		    
+		    <RelativeLayout 
+		        android:id="@+id/detail_relative_layout"
+		        android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:visibility="invisible"
+				android:layout_below="@+id/detail_button_itineraire">
+			   
+	  			<FrameLayout 
+					android:id="@+id/map_container"
+					android:layout_margin="5dp"
+					android:layout_width="match_parent"
+					android:layout_height="300dp"
+					>
+				</FrameLayout>
+				
+			</RelativeLayout>
+			    
 	</RelativeLayout>	
 	
 

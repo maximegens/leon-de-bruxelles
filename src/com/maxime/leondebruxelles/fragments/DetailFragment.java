@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +22,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.maxime.leondebruxelles.R;
 import com.maxime.leondebruxelles.activity.AlertDialogCustom;
 import com.maxime.leondebruxelles.beans.LeonDeBruxelles;
@@ -56,8 +64,13 @@ public class DetailFragment extends Fragment {
     ImageView imgViewtel;
     ImageView imgViewParking;
     ImageView imgViewAccesHandicape;
+    Button buttonItineraire;
+    RelativeLayout relativeLayout;
     MapFragment map;
     ProgressBar loaderPhoto;
+    GoogleMap mMap;
+    SupportMapFragment mMapFragment;
+    Marker marker;
    
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +101,8 @@ public class DetailFragment extends Fragment {
         imgViewAccesHandicape = (ImageView)myInflatedView.findViewById(R.id.detail_handicape_leon);
         imgViewtel = (ImageView)myInflatedView.findViewById(R.id.detail_image_tel);
         loaderPhoto = (ProgressBar)myInflatedView.findViewById(R.id.detail_progress_bar_photo_leon);
+        buttonItineraire = (Button)myInflatedView.findViewById(R.id.detail_button_itineraire);
+        relativeLayout = (RelativeLayout)myInflatedView.findViewById(R.id.detail_relative_layout);
     	
     	if(pictureLeon != null)
     		imgViewPhoto.setImageBitmap(pictureLeon);
@@ -122,6 +137,16 @@ public class DetailFragment extends Fragment {
         super.onAttach(activity);
     }
     
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		FragmentManager fm = getChildFragmentManager();
+		mMapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map_container);
+		if (mMapFragment == null) {
+			mMapFragment = SupportMapFragment.newInstance();
+			fm.beginTransaction().replace(R.id.map_container, mMapFragment).commit();
+		}
+	}
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -149,8 +174,10 @@ public class DetailFragment extends Fragment {
     public void updateDetailView(int id) {
     	
     	textViewSelectionLeon.setVisibility(View.INVISIBLE);
+    	buttonItineraire.setVisibility(View.VISIBLE);
+    	relativeLayout.setVisibility(View.VISIBLE);
     	
-        LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
+        final LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
         isConnected = Connection.isConnectedInternet(getActivity());
         
         if(Constantes.NB_PANEL == 2)
@@ -164,6 +191,13 @@ public class DetailFragment extends Fragment {
             retreivePhotoLeonTask.execute(leLeon.getPhoto());
         }
         
+		mMap = mMapFragment.getMap();
+		if(marker != null)
+			marker.remove();
+		LatLng positionLeon = new LatLng(Double.valueOf(leLeon.getLatitude()), Double.valueOf(leLeon.getLongitude()));
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLeon, 13));
+		marker = mMap.addMarker(new MarkerOptions().position(positionLeon));
+        
         textViewNomLeon.setText(Html.fromHtml(Constantes.TITRE_LEON+" <br/> "+leLeon.getNom()));
         textViewAdresseCompleteLeon.setText(leLeon.getAdresse() +" - "+ leLeon.getCodePostal()+ " " +leLeon.getVille());
         textViewHoraires.setText(Html.fromHtml(leLeon.getInfosSupplementaires()));
@@ -175,23 +209,22 @@ public class DetailFragment extends Fragment {
         if(leLeon.getAccesHandicape().equals("1"))
         	imgViewAccesHandicape.setVisibility(View.VISIBLE);
         
+    	buttonItineraire.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+				Uri.parse("http://maps.google.com/maps?saddr="+leLeon.getLatitude()+","+leLeon.getLongitude()+"&daddr="+Constantes.LOCATION_USER.getLatitude()+","+Constantes.LOCATION_USER.getLongitude()));
+				startActivity(intent);
+			}
+		});
+        
         textViewHoraires.setVisibility(View.VISIBLE);
         textViewInformationsLeon.setVisibility(View.VISIBLE);
         imgViewtel.setVisibility(View.VISIBLE);
         
-/** Ce code fonctionne sous Tablette **/
-/**      GoogleMap map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-    	LatLng positionLeon = new LatLng(Double.parseDouble(leLeon.getLatitude()),Double.parseDouble(leLeon.getLongitude()));
-        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLeon, 13));
-        map.addMarker(new MarkerOptions()
-                .title(leLeon.getNom())
-                .snippet("The most populous city in Australia.")
-                .position(positionLeon));
-**/    
-        
         mCurrentIdLeon = id;
     }
+        
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
