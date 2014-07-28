@@ -174,11 +174,20 @@ public class DetailFragment extends Fragment {
     public void updateDetailView(int id) {
     	
     	textViewSelectionLeon.setVisibility(View.INVISIBLE);
-    	buttonItineraire.setVisibility(View.VISIBLE);
-    	relativeLayout.setVisibility(View.VISIBLE);
+    	isConnected = Connection.isConnectedInternet(getActivity());
     	
+    	if(isConnected){
+        	relativeLayout.setVisibility(View.VISIBLE);
+        	if(Constantes.LOCATION_USER != null)
+        		buttonItineraire.setVisibility(View.VISIBLE);
+        	else
+        		buttonItineraire.setVisibility(View.INVISIBLE);
+    	}else{
+        	buttonItineraire.setVisibility(View.INVISIBLE);
+        	relativeLayout.setVisibility(View.INVISIBLE);
+    	}
+
         final LeonDeBruxelles leLeon = Constantes.LES_RESTAURANTS.getLeonById(id);
-        isConnected = Connection.isConnectedInternet(getActivity());
         
         if(Constantes.NB_PANEL == 2)
         	pictureLeon = null;
