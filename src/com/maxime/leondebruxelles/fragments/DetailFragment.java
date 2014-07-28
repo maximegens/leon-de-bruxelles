@@ -214,9 +214,13 @@ public class DetailFragment extends Fragment {
            
         if(leLeon.getParking().equals("1")){
         	imgViewParking.setVisibility(View.VISIBLE);
-        }
+        }else
+        	imgViewParking.setVisibility(View.INVISIBLE);
+        
         if(leLeon.getAccesHandicape().equals("1"))
         	imgViewAccesHandicape.setVisibility(View.VISIBLE);
+        else
+        	imgViewAccesHandicape.setVisibility(View.INVISIBLE);
         
     	buttonItineraire.setOnClickListener(new OnClickListener() {
 			@Override
