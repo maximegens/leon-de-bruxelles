@@ -138,7 +138,7 @@
 		        android:layout_below="@+id/detail_informations"
 		        android:contentDescription="@string/content_parking_img_leon"
 		        android:src="@drawable/parking" 
-		        android:visibility="visible"/>
+		        android:visibility="invisible"/>
 	
 		    <ImageView
 		        android:id="@+id/detail_handicape_leon"
@@ -148,7 +148,7 @@
 		        android:layout_below="@+id/detail_parking_leon"
 		        android:contentDescription="@string/content_handicape_img_leon"
 		        android:src="@drawable/handicape" 
-		        android:visibility="visible"/>
+		        android:visibility="invisible"/>
 			    
 		    <Button
 		        android:id="@+id/detail_button_itineraire"
